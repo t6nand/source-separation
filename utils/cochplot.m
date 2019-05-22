@@ -22,7 +22,7 @@ imagesc(flipud(log(r+1)));
 % x tick
 x_intv = 200;       % a tick every 200 ms
 x = 0:round(x_intv/frame_rate):numFrame;
-x_label = x.*frame_rate./1000*60; % in 30 seconds
+x_label = x.*frame_rate./1000; % in seconds
 
 % y tick
 y_ntick = 6; % the number of ticks in the frequency axis
