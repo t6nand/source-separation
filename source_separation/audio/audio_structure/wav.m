@@ -27,8 +27,9 @@ classdef wav < audio_interface
                     end
                     mono = mono / obj.num_channels;
                     mono_channel_audio = mono;
+                    obj.sampled_audio_mono = mono_channel_audio;
                 else 
-                    mono_channel_audio = get_sampled_audio(obj);
+                    mono_channel_audio = obj.get_sampled_audio();
                     obj.sampled_audio_mono = mono_channel_audio;
                 end
             else
