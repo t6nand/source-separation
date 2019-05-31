@@ -2,7 +2,7 @@ function [] = pitch_plot(y, freqs, loc)
 subplot(2,1,1);
 plot(y);
 ylabel('Amplitude');
-title('Aplitude Plot');
+title('Amplitude Plot');
 
 subplot(2,1,2);
 plot(loc,freqs);
