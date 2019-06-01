@@ -5,7 +5,8 @@ classdef wav < audio_interface
     methods
         function obj = wav(file_path)
             obj.audio_file_path = file_path;
-            [obj.sampled_audio_original, obj.sampling_rate] = audioread(file_path);
+            [obj.sampled_audio_original, obj.sampling_rate] = ...
+                audioread(file_path);
             [~, obj.num_channels] = size(obj.sampled_audio_original); 
         end
         
