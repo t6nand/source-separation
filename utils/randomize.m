@@ -1,4 +1,4 @@
-function [s,Fs,n]= randomize(a,b)    
+function [s,n]= randomize(a,b)    
 % Enter the directory of speech signal in variable a and of noise signal in
 % b
     speech=audioDatastore(a,'IncludeSubfolders',true,...
@@ -12,5 +12,5 @@ function [s,Fs,n]= randomize(a,b)
     i2=randi([1,count2],1); %Generate a random integer between 1 and the number...
                           % of files
 
-    [s, Fs]= audioread(speech.Files{i1});
-    [n]=audioread(noise.Files{i2});
+    s = wav(speech.Files{i1});
+    n = wav(noise.Files{i2});
