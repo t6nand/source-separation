@@ -13,6 +13,8 @@ classdef audio_features
         mfcc_features_counter
         pitch_coeffs
         pitch_locs
+        stft_feats
+        stft_freq
         window_length
         overlap_length
         combined_features
@@ -48,7 +50,17 @@ classdef audio_features
                 'OverlapLength',obj.overlap_length, ...
                 'Range',obj.freq_range, ...
                 'MedianFilterLength',3);
-        end 
+        end
+        
+        function obj = calc_stft(obj, au)
+            win = hamming(obj.window_length,'Periodic');
+            FFTLength = obj.window_length;
+            [obj.stft_feats, obj.stft_freq] = stft(...
+                au.get_sampled_audio_mono(), ...
+                'Window', win, ...
+                'OverlapLength',obj.overlap_length, ...
+                'FFTLength', FFTLength);
+        end
         
     end
     
@@ -127,6 +139,14 @@ classdef audio_features
            p_locs = obj.pitch_locs;
         end
         
+        function [stft, freqs] = get_stft(obj, aud)
+            if isempty(obj.stft_feats)
+                obj = obj.calc_stft(aud);
+            end
+            stft = obj.stft_feats;
+            freqs = obj.stft_freq;
+        end
+        
         function norm_feat = get_normalised_features(obj, aud)
             if isempty(obj.normalized_features)
                 [gfcc, ~] = obj.get_gfcc(aud);
@@ -135,8 +155,13 @@ classdef audio_features
                 normalized_mfcc = mfcc / norm(mfcc);
                 [pitch, ~] = obj.get_pitch(aud);
                 normalized_pitch = pitch / norm(pitch);
+                [stft, ~] = obj.get_stft(aud);
+                normalized_stft = stft / norm(stft);
             end
-            norm_feat = [normalized_gfcc normalized_mfcc normalized_pitch];
+            norm_feat = [normalized_gfcc; ...
+                         normalized_mfcc; ...
+                         normalized_pitch; ...
+                         normalized_stft];
         end
     end    
 end
