@@ -1,6 +1,5 @@
 .gitignore
 .*
-test*
 dataset*
 Dataset*
 DataSet*
