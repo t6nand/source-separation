@@ -1,29 +1,31 @@
 classdef audio_features
     %AUDIO_FEATURES: Centralised class to keep list of audio features
     %   This class will consist of list of audio features relevant 
-    %   to the problem statement and the associated methods to access 
-    %   these features.
+    %   to the speech identification and separation and the associated 
+    %   methods to access these features.
     
     properties (Access = private)
-        gfcc_coeffs
+        gfcc_coeffs % Gammatone Cepstral Coefficients.
         gfcc_locs
-        gfcc_features_counter
-        mfcc_coeffs
+        gfcc_features_counter % Number of GFCC features.
+        mfcc_coeffs % Mel-Frequency Cepstral Coefficients.
         mfcc_locs
-        mfcc_features_counter
-        pitch_coeffs
+        mfcc_features_counter % Number of MFCC features
+        pitch_coeffs % Pitch components in audio.
         pitch_locs
-        stft_feats
-        stft_freq
-        window_length
-        overlap_length
-        combined_features
-        normalized_features
-        freq_range
+        stft_feats % PSD coefficients after STFT.
+        stft_freq % Frequency components after STFT
+        window_length % Tunable window length for feature extraction.
+        overlap_length % Tunable overlap length for feature extraction.
+        combined_features % Combined feature vector.
+        normalized_features % Normalised feature vector.
+        freq_range % Frequency range to operate on. 
     end
     
-    methods (Access = private)
+    methods (Access = private) % Private methods:
+        
         function obj = calc_gfcc(obj, au)
+            % Function to evaluate GFCC features.
             [obj.gfcc_coeffs,~,~,obj.gfcc_locs] = gtcc( ...
                                       au.get_sampled_audio_mono(), ...
                                       au.get_sampling_rate(), ...
@@ -34,6 +36,7 @@ classdef audio_features
         end
 
         function obj = calc_mfcc(obj, au)
+            % Function to evaluate MFCC features.
             [obj.mfcc_coeffs,~,~,obj.mfcc_locs] = mfcc(...
                                au.get_sampled_audio_mono(), ...
                                au.get_sampling_rate(), ...
@@ -43,6 +46,7 @@ classdef audio_features
         end
 
         function obj = calc_pitch(obj, au)
+            % Function to evaluate pitch features.
             [obj.pitch_coeffs, obj.pitch_locs] = pitch( ...
                 au.get_sampled_audio_mono(), ...
                 au.get_sampling_rate(), ...
@@ -53,7 +57,8 @@ classdef audio_features
         end
         
         function obj = calc_stft(obj, au)
-            win = hamming(obj.window_length,'Periodic');
+            % Function to evaluate STFT of audio.
+            win = hamming(obj.window_length,'Periodic'); % TODO: Analyse different windows.
             FFTLength = obj.window_length;
             [obj.stft_feats, obj.stft_freq] = stft(...
                 au.get_sampled_audio_mono(), ...
@@ -64,15 +69,15 @@ classdef audio_features
         
     end
     
-    methods (Access = public)
+    methods (Access = public) % Public methods & getters:
+        
         function this = audio_features(varargin)
-            %AUDIO_FEATURES Construct an instance of this class
+            %   AUDIO_FEATURES CONSTRUCTOR: Construct an instance,
             %   using aud object of class audio_interface, initialises
             %   window length and overlap length required to fetch 
             %   many relevant features.
             %   Also implements many fail safe checks to identify type
-            %   of objects & arguments being passed to ensure flow of 
-            %   control as per the requirements.
+            %   of objects & arguments being passed to ensure integrity.
             %
             %   Example usage: feat_obj = audio_features(wav_audio_obj); 
             
@@ -112,10 +117,14 @@ classdef audio_features
             end
         end
         
-        %   All the access/get methods use lazy evaluation i.e. fetch
-        %   features when requested and only one time.
+        %   All the access/get methods use lazy evaluation i.e. calculate
+        %   and initialise properties only once when called. Once
+        %   initialised only return (without re-calculation, thus being 
+        %   memory friendly) on subsequent calls.
         
         function [gfcc_coeff, gfcc_locs] = get_gfcc(obj, aud)
+           % GET_GFCC: Getter function to obtain GTCC coefficients and
+           % corresponding sample numbers. Uses Lazy Evaluation. 
            if isempty(obj.gfcc_coeffs)
                obj = obj.calc_gfcc(aud);
            end 
@@ -124,6 +133,8 @@ classdef audio_features
         end
         
         function [mfcc_coeff, mfcc_locs] = get_mfcc(obj, aud)
+           % GET_MFCC: Getter function to obtain MFCC coefficients and
+           % corresponding sample numbers. Uses Lazy Evaluation.
            if isempty(obj.mfcc_coeffs)
                obj = obj.calc_mfcc(aud);
            end 
@@ -132,6 +143,8 @@ classdef audio_features
         end
         
         function [pitch_coeff, p_locs] = get_pitch(obj, aud)
+           % GET_PITCH: Getter function to obtain Pitch information and
+           % corresponding sample numbers. Uses Lazy Evaluation. 
            if isempty(obj.pitch_coeffs)
                obj = obj.calc_pitch(aud);
            end 
@@ -140,6 +153,8 @@ classdef audio_features
         end
         
         function [stft, freqs] = get_stft(obj, aud)
+           % GET_STFT: Getter function to obtain STFT and
+           % corresponding sample frequencis. Uses Lazy Evaluation.
             if isempty(obj.stft_feats)
                 obj = obj.calc_stft(aud);
             end
@@ -148,6 +163,11 @@ classdef audio_features
         end
         
         function norm_feat = get_normalised_features(obj, aud)
+           % GET_NORMALISED_FEATURES: Getter function to obtain normalised
+           % feature vector for an audio to ensure dimensionless and 
+           % magnitude vice normalised data. NOTE: Input Data normalization
+           % should be handled separately before passing on to Learning
+           % Machine.
             if isempty(obj.normalized_features)
                 [gfcc, ~] = obj.get_gfcc(aud);
                 normalized_gfcc = gfcc / norm(gfcc);

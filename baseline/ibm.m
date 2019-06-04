@@ -3,7 +3,12 @@ function [clean_speech_hard] = ibm(clean_speech,...
                                                       val_Power,...
                                                       smm,...
                                                       do_plot)
+                                                  
+    % IBM: Ideal Binary Mask. This function thresholds the soft mask
+    % estimated by the DNN. 
     
+    % TODO : Add SNR based local criterion thresholding. 
+    % TODO : Use audio_features class and ask for params like windowlength.
     WindowLength  = 128;
     FFTLength     = 128;
     OverlapLength = 128-1;

@@ -1,5 +1,5 @@
 function plotMask(P,hopLength,F,fs)
-
+% This function plots binary mask like IBM.
 plotopts.isFsnormalized = false;
 if nargin == 5
     plotopts.cblbl = '';

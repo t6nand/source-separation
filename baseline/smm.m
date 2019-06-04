@@ -2,6 +2,12 @@ function [clean_speech_est, smm_soft, validated_psd] = smm(neural_net,...
                                             val_Power,...
                                             do_plot_estimate,...
                                             mixSequencesV) 
+    % SMM : This function predicts the neural network response for input
+    % and generates a soft mask (in this case a Spectral Magnitude Mask)
+    % for clean speech estimation.
+    
+    % TODO : Use audio_features class for asking parameters like
+    % windowlength.
     FFTLength     = 128;
     smm_soft = predict(neural_net,mixSequencesV);
     smm_soft = smm_soft.';
@@ -13,7 +19,7 @@ function [clean_speech_est, smm_soft, validated_psd] = smm(neural_net,...
     
     WindowLength  = 128;
     OverlapLength = 128-1;
-    win           = hann(WindowLength,"periodic");
+    win           = hann(WindowLength,"periodic"); % TODO: use window recommended by Toaha.
     P_estimate_clean = val_Power .* clean_mask;
     P_estimate_clean = [conj(P_estimate_clean(end-1:-1:2,:)) ; P_estimate_clean ];
     clean_speech_est = istft(P_estimate_clean, 'Window',win,'OverlapLength',OverlapLength,'FFTLength',FFTLength,'ConjugateSymmetric',true);

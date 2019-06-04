@@ -1,9 +1,9 @@
 classdef audio_interface
    properties (Access = protected)
-      audio_file_path
-      sampled_audio_original
-      sampled_audio_mono
-      sampling_rate
+      audio_file_path % Disk Path to audio file
+      sampled_audio_original % Original sampled audio
+      sampled_audio_mono % Mono channel sampled audio.
+      sampling_rate % Audio's sampling rate.
    end
    methods (Abstract)
       % This function returns the sampled audio from the raw audio. 

@@ -1,4 +1,6 @@
 function [] = pitch_plot(y, freqs, loc)
+% PITCH_PLOT: This function plots pitch components in an audio along with
+% aplitude plot.
 subplot(2,1,1);
 plot(y);
 ylabel('Amplitude');

@@ -6,7 +6,7 @@ function [speech_separation_net, mix_sequences_validation]  = ...
                                 do_training,...
                                 FFTLength)
     
-    % 1. Generate data which will be fed to the neural network based on
+    % 1. Reshape data which will be fed to the neural network based on
     % input
     mix_sequences_training  = reshape(mixture_sequences,    [1 1 (1 + FFTLength/2) * ...
                               seqLen size(mixture_sequences,4)]);
@@ -18,9 +18,10 @@ function [speech_separation_net, mix_sequences_validation]  = ...
                                seqLen size(mask_sequence_validation,4)]);
     
     % 2. Define a DNN with 5 layers. Input to the network being a matrix
-    % of size 1x1x1300. Each hidden layer having 2048 neurons and finally
-    % a fully connected layer with 1300 neurons followed by a regression
-    % layer. 
+    % of size 1x1x1300 (as only STFT features are used).
+    % Each hidden layer having 2048 neurons and reLU activation and finally
+    % an output fully connected layer with 1300 neurons as a regression
+    % layer.
     layers = [...
     imageInputLayer([1 1 (1 + FFTLength/2)*seqLen],"Normalization","None")
 
@@ -44,8 +45,8 @@ function [speech_separation_net, mix_sequences_validation]  = ...
     regressionLayer
     ];
 
-    maxEpochs     = 3;
-    miniBatchSize = 64;
+    maxEpochs     = 3; % Number of training epochs
+    miniBatchSize = 64; % mini Batch size.
 
     options = trainingOptions("adam", ...
         "MaxEpochs",maxEpochs, ...
