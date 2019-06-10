@@ -6,9 +6,13 @@ classdef audio_features
     
     properties (Access = private)
         gfcc_coeffs % Gammatone Cepstral Coefficients.
+        gfcc_delta
+        gfcc_delta_delta
         gfcc_locs
         gfcc_features_counter % Number of GFCC features.
         mfcc_coeffs % Mel-Frequency Cepstral Coefficients.
+        mfcc_delta
+        mfcc_delta_delta
         mfcc_locs
         mfcc_features_counter % Number of MFCC features
         pitch_coeffs % Pitch components in audio.
@@ -26,7 +30,7 @@ classdef audio_features
         
         function obj = calc_gfcc(obj, au)
             % Function to evaluate GFCC features.
-            [obj.gfcc_coeffs,~,~,obj.gfcc_locs] = gtcc( ...
+            [obj.gfcc_coeffs,obj.gfcc_delta,obj.gfcc_delta_delta,obj.gfcc_locs] = gtcc( ...
                                       au.get_sampled_audio_mono(), ...
                                       au.get_sampling_rate(), ...
                                       'NumCoeffs',obj.gfcc_features_counter, ...
@@ -37,7 +41,7 @@ classdef audio_features
 
         function obj = calc_mfcc(obj, au)
             % Function to evaluate MFCC features.
-            [obj.mfcc_coeffs,~,~,obj.mfcc_locs] = mfcc(...
+            [obj.mfcc_coeffs,obj.mfcc_delta,obj.mfcc_delta_delta,obj.mfcc_locs] = mfcc(...
                                au.get_sampled_audio_mono(), ...
                                au.get_sampling_rate(), ...
                                'NumCoeffs',obj.mfcc_features_counter, ...
@@ -122,23 +126,27 @@ classdef audio_features
         %   initialised only return (without re-calculation, thus being 
         %   memory friendly) on subsequent calls.
         
-        function [gfcc_coeff, gfcc_locs] = get_gfcc(obj, aud)
+        function [gfcc_coeff, gfcc_delta, gfcc_delta_delta, gfcc_locs] = get_gfcc(obj, aud)
            % GET_GFCC: Getter function to obtain GTCC coefficients and
            % corresponding sample numbers. Uses Lazy Evaluation. 
            if isempty(obj.gfcc_coeffs)
                obj = obj.calc_gfcc(aud);
            end 
            gfcc_coeff = obj.gfcc_coeffs;
+           gfcc_delta = obj.gfcc_delta;
+           gfcc_delta_delta = obj.gfcc_delta_delta;
            gfcc_locs = obj.gfcc_locs;
         end
         
-        function [mfcc_coeff, mfcc_locs] = get_mfcc(obj, aud)
+        function [mfcc_coeff, mfcc_delta, mfcc_delta_delta, mfcc_locs] = get_mfcc(obj, aud)
            % GET_MFCC: Getter function to obtain MFCC coefficients and
            % corresponding sample numbers. Uses Lazy Evaluation.
            if isempty(obj.mfcc_coeffs)
                obj = obj.calc_mfcc(aud);
            end 
            mfcc_coeff = obj.mfcc_coeffs;
+           mfcc_delta = obj.mfcc_delta;
+           mfcc_delta_delta = obj.mfcc_delta_delta;
            mfcc_locs = obj.mfcc_locs;
         end
         
@@ -169,14 +177,17 @@ classdef audio_features
            % should be handled separately before passing on to Learning
            % Machine.
             if isempty(obj.normalized_features)
-                [gfcc, ~] = obj.get_gfcc(aud);
+                [gfcc, gd, gdd, ~] = obj.get_gfcc(aud);
                 normalized_gfcc = gfcc / norm(gfcc);
-                [mfcc, ~] = obj.get_mfcc(aud);
+                [mfcc, md, mdd, ~] = obj.get_mfcc(aud);
                 normalized_mfcc = mfcc / norm(mfcc);
                 [pitch, ~] = obj.get_pitch(aud);
                 normalized_pitch = pitch / norm(pitch);
-                [stft, ~] = obj.get_stft(aud);
-                normalized_stft = stft / norm(stft);
+                [pow_sig, ~] = obj.get_stft(aud);
+                pow_sig = log(abs(pow_sig)+eps);
+                m_stft = mean(pow_sig(:));
+                s_stft = std(pow_sig(:));
+                normalized_stft = (pow_sig - m_stft)/s_stft;
             end
             norm_feat = [normalized_gfcc; ...
                          normalized_mfcc; ...
