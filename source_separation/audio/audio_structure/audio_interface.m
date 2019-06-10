@@ -12,5 +12,7 @@ classdef audio_interface
       get_sampled_audio_mono(obj)
       % This function returns the sampling rate of the audio.
       get_sampling_rate(obj)
+      % This function returns the file path on local system.
+      get_audio_file_path(obj)
    end
 end

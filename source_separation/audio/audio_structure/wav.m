@@ -3,14 +3,19 @@ classdef wav < audio_interface % This class inherits AUDIO_INTERFACE
         num_channels % Number of channels in the audio file.
     end
     methods
-        function obj = wav(file_path)
+        function obj = wav(file_path, audio)
             % WAV CONSTRUCTOR: Constructs the concrete implementation to
             % the AUDIO_INTERFACE superclass. Initialises the 
             % data and enables WAV objects to implement abstract methods of
             % AUDIO_INTERFACE.
-            obj.audio_file_path = file_path;
-            [obj.sampled_audio_original, obj.sampling_rate] = ...
+            if ~isempty(file_path)
+                obj.audio_file_path = file_path;
+                [obj.sampled_audio_original, obj.sampling_rate] = ...
                 audioread(file_path);
+            end
+            if ~isempty(audio) && isempty(file_path)
+                obj.sampled_audio_original = audio;
+            end
             [~, obj.num_channels] = size(obj.sampled_audio_original); 
         end
         
@@ -52,6 +57,13 @@ classdef wav < audio_interface % This class inherits AUDIO_INTERFACE
             % method defined in AUDIO_INTERFACE. Returns the sampling rate
             % of the audio.
             sampling_rate = obj.sampling_rate;
+        end
+        
+        function path = get_audio_file_path(obj)
+            % GET_AUDIO_FILE_PATH: Concrete implementation of the abstract
+            % method defined in AUDIO_INTERFACE. Returns the filepath
+            % of the audio.
+            path = obj.audio_file_path;
         end
     end
 end
