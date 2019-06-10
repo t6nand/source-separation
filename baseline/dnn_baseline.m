@@ -18,35 +18,35 @@ function [speech_separation_net, mix_sequences_validation]  = ...
                                seqLen size(mask_sequence_validation,4)]);
     
     % 2. Define a DNN with 5 layers. Input to the network being a matrix
-    % of size 1x1x1300 (as only STFT features are used).
+    % of size 1x1x(1 + FFTLength/2)*seqLen (as only STFT features are used).
     % Each hidden layer having 2048 neurons and reLU activation and finally
-    % an output fully connected layer with 1300 neurons as a regression
-    % layer.
+    % an output fully connected layer with (1 + FFTLength/2)*seqLen neurons
+    % as a regression layer.
     layers = [...
     imageInputLayer([1 1 (1 + FFTLength/2)*seqLen],"Normalization","None")
 
-    fullyConnectedLayer(2048)
+    fullyConnectedLayer((1 + FFTLength/2)*seqLen)
     batchNormalizationLayer
     reluLayer
 
-    fullyConnectedLayer(2048)
+    fullyConnectedLayer((1 + FFTLength/2)*seqLen)
     batchNormalizationLayer
     reluLayer
 
-    fullyConnectedLayer(2048)
+    fullyConnectedLayer((1 + FFTLength/2)*seqLen)
     batchNormalizationLayer
     reluLayer
 
-    fullyConnectedLayer(2048)
+    fullyConnectedLayer((1 + FFTLength/2)*seqLen)
     batchNormalizationLayer
     reluLayer
 
-    fullyConnectedLayer(1300)
+    fullyConnectedLayer((1 + FFTLength/2)*seqLen)
     regressionLayer
     ];
 
     maxEpochs     = 3; % Number of training epochs
-    miniBatchSize = 64; % mini Batch size.
+    miniBatchSize = 16; % mini Batch size.
 
     options = trainingOptions("adam", ...
         "MaxEpochs",maxEpochs, ...
