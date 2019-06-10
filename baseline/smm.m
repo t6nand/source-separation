@@ -16,17 +16,16 @@ function [clean_speech_est, smm_soft, validated_psd] = smm(neural_net,...
     clean_mask   = smm_soft; 
     
     val_Power = val_Power(:,1:size(clean_mask,2));
-    
+    Fs            = 16000;
+        
     WindowLength  = 128;
-    OverlapLength = 128-1;
+    OverlapLength = 80;
     win           = hann(WindowLength,"periodic"); % TODO: use window recommended by Toaha.
     P_estimate_clean = val_Power .* clean_mask;
     P_estimate_clean = [conj(P_estimate_clean(end-1:-1:2,:)) ; P_estimate_clean ];
-    clean_speech_est = istft(P_estimate_clean, 'Window',win,'OverlapLength',OverlapLength,'FFTLength',FFTLength,'ConjugateSymmetric',true);
+    clean_speech_est = istft(P_estimate_clean, Fs, 'Window',win,'OverlapLength',OverlapLength,'FFTLength',FFTLength,'ConjugateSymmetric',true);
     clean_speech_est = clean_speech_est / max(abs(clean_speech_est));
-    
     if do_plot_estimate
-        Fs            = 8000;
         range = (numel(win):numel(clean_speech_est)-numel(win));
         t     = range * (1/Fs);
         figure(1);
