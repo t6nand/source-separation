@@ -14,3 +14,4 @@ function [s,n]= randomize(a,b)
 
     s = wav(speech.Files{i1});
     n = wav(noise.Files{i2});
+end
