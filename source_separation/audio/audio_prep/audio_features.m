@@ -68,6 +68,42 @@ classdef audio_features
             obj.stft_feats = obj.stft_feats(N-1:end,:);
         end
         
+        function obj = calc_normalised_features(obj,aud)
+           % GET_NORMALISED_FEATURES: Getter function to obtain normalised
+           % feature vector for an audio to ensure dimensionless and 
+           % magnitude vice normalised data. NOTE: Input Data normalization
+           % should be handled separately before passing on to Learning
+           % Machine.
+%             if isempty(obj.gfcc_coeffs)
+%                 obj = obj.calc_gfcc(aud);
+%             end
+%             if isempty(obj.mfcc_coeffs)
+%                 obj = obj.calc_mfcc(aud);
+%             end
+%             if isempty(obj.pitch_coeffs)
+%                 obj = obj.calc_pitch(aud);
+%             end
+            if isempty(obj.stft_feats)
+                obj = obj.calc_stft(aud);
+            end
+            
+%             obj.normalized_features = zeros(size(obj.gfcc_coeffs,1), 7*size(obj.gfcc_coeffs,2) + size(obj.stft_feats,1));
+%             obj.normalized_features(:,1:14) =  obj.gfcc_coeffs;
+%             obj.normalized_features(:,15:28) = obj.gfcc_delta;
+%             obj.normalized_features(:,29:42) = obj.gfcc_delta_delta;
+%             obj.normalized_features(:,43:56) = obj.mfcc_coeffs;
+%             obj.normalized_features(:,57:70) = obj.mfcc_delta;
+%             obj.normalized_features(:,71:84) = obj.mfcc_delta_delta;
+%             norm_pitch = [obj.pitch_coeffs, zeros(size(obj.pitch_coeffs,1),13)];
+%             obj.normalized_features(:,85:98) = norm_pitch;
+            norm_stft = log(abs(obj.stft_feats)+eps);
+            norm_stft = norm_stft';
+%             obj.normalized_features(:,99:end) = norm_stft;
+            obj.normalized_features = norm_stft;
+            m = mean(obj.normalized_features(:));
+            s = std(obj.normalized_features(:));
+            obj.normalized_features = (obj.normalized_features - m) ./ s;
+           end
     end
     
     methods (Access = public) % Public methods & getters:
@@ -172,22 +208,9 @@ classdef audio_features
            % should be handled separately before passing on to Learning
            % Machine.
             if isempty(obj.normalized_features)
-                [gfcc, gd, gdd, ~] = obj.get_gfcc(aud);
-                normalized_gfcc = gfcc / norm(gfcc);
-                [mfcc, md, mdd, ~] = obj.get_mfcc(aud);
-                normalized_mfcc = mfcc / norm(mfcc);
-                [pitch, ~] = obj.get_pitch(aud);
-                normalized_pitch = pitch / norm(pitch);
-                [pow_sig, ~] = obj.get_stft(aud);
-                pow_sig = log(abs(pow_sig)+eps);
-                m_stft = mean(pow_sig(:));
-                s_stft = std(pow_sig(:));
-                normalized_stft = (pow_sig - m_stft)/s_stft;
+                obj = obj.calc_normalised_features(aud);
             end
-            norm_feat = [normalized_gfcc; ...
-                         normalized_mfcc; ...
-                         normalized_pitch; ...
-                         normalized_stft];
+            norm_feat = obj.normalized_features;
         end
     end    
 end
