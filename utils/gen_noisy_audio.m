@@ -1,7 +1,7 @@
 function [noisy_mixture_struct, clean_struct, noise_struct] = gen_noisy_audio(clean_ads, noise_ads, snr)
     % GEN_NOISY_AUDIO: Thsi method generates and saves the randomly created
     % noisy speech audio files using clean speech and noise interferers.
-    [s, n] = randomize(clean_path, noise_path); % Randomly pick up a speech and noise object.
+    [s, n] = randomize(clean_ads, noise_ads); % Randomly pick up a speech and noise object.
     clean_aud = s.get_sampled_audio_mono();
     noisy_aud = n.get_sampled_audio_mono();
     
@@ -25,8 +25,10 @@ function [noisy_mixture_struct, clean_struct, noise_struct] = gen_noisy_audio(cl
         noisy_mixture = noisy_aud + clean_aud;
     end
     
-    clean = clean_aud;
-    noise = noisy_aud;
+    noisy_mixture = noisy_mixture / max(noisy_mixture); % Noisy audio generated.
+    noisy_mixture_struct = wav([], noisy_mixture, s.get_sampling_rate());
+    clean_struct = wav([], clean_aud, s.get_sampling_rate());
+    noise_struct = wav([], noisy_aud, s.get_sampling_rate());
 end
 
 function [desired_sig] = signal_at_snr(sig, noise, SNR)
