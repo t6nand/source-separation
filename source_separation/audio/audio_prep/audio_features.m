@@ -88,8 +88,8 @@ classdef audio_features
                                         ' No object provided to feature class');
                     throw(aud_fet_ex);
                 case 1
-                    aud = varargin{1};
-                    obj_class = class(aud);
+                    au = varargin{1};
+                    obj_class = class(au);
                     obj_superclass = superclasses(obj_class);
                     if numel(obj_superclass)  > 1 
                         aud_fet_ex = MException('Incorrect_Initialization', ...
@@ -100,10 +100,8 @@ classdef audio_features
                                                 obj_superclass{1}, ...
                                                 'audio_interface');
                        if is_instance_of_audio_interface
-                            this.window_length = round(0.05*aud.get_sampling_rate());
-                            this.overlap_length = round(0.025*aud.get_sampling_rate());
-                            this.gfcc_features_counter = 25;
-                            this.mfcc_features_counter = 25;
+                            this.window_length = floor(30e-3 * au.get_sampling_rate());
+                            this.overlap_length = floor(0.25*this.window_length);
                             this.freq_range = [50 8000];
                        else
                             aud_fet_ex = MException('Incorrect_Initialization', ...
