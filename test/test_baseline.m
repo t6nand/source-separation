@@ -1,102 +1,76 @@
 function [] = test_baseline(clean_files, noise_files)
-   
-    [train_data, validation_data] = gen_train_data(clean_files, noise_files, 100, 0.3, 0, -5);
     
-    mixTrain = double.empty();
-    clean_sequenced = double.empty();
-    noise_sequenced = double.empty();
-    for i = 1:size(train_data,1)
-        noisy_mixture = train_data(i,1);
-        clean_aud = train_data(i,2);
-        noise_aud = train_data(i,3);
-        mixTrain = [mixTrain; noisy_mixture];
-        clean_sequenced = [clean_sequenced; clean_aud];
-        noise_sequenced = [noise_sequenced; noise_aud];
-    end
+    [train_data_struct, validation_data_struct] = gen_train_data(clean_files, noise_files, 500, 0.15, 0, 0, false);
     
-    train_audio_structure = wav([],mixTrain);
-    train_audio_featurs = audio_features(train_audio_structure);
-    mixValidate = double.empty();
-    val_clean_sequenced = double.empty();
-    val_noise_sequenced = double.empty();
-    for i = 1:size(validation_data,1)
-        val_noisy_mixture = validation_data(i,1);
-        val_clean_aud = validation_data(i,2);
-        val_noise_aud = validation_data(i,3);
-        mixValidate = [mixValidate; val_noisy_mixture];
-        val_clean_sequenced = [val_clean_sequenced; val_clean_aud];
-        val_noise_sequenced = [val_noise_sequenced; val_noise_aud];
-    end
+    % 1. Load training data.
+    train_data_mix = train_data_struct(:,1);
+    train_data_clean = train_data_struct(:,2);
+    train_data_noise = train_data_struct(:,3);
     
-    Fs            = 16000;
-    WindowLength  = 128;
-    FFTLength     = WindowLength;
-    OverlapLength = 80;
-    win           = hann(WindowLength,"periodic");
+    % 2. Load Validation data.
+    validation_data_mix = validation_data_struct(:,1);
+    validation_data_clean = validation_data_struct(:,2);
+    validation_data_noise = validation_data_struct(:,3);
     
-    P_mix0 = stft(mixTrain,Fs,'Window',win,'OverlapLength',OverlapLength,'FFTLength',FFTLength);
-    P_clean    = abs(stft(clean_sequenced,Fs,'Window',win,'OverlapLength',OverlapLength,'FFTLength',FFTLength));
-    P_noise    = abs(stft(noise_sequenced,Fs,'Window',win,'OverlapLength',OverlapLength,'FFTLength',FFTLength));
+    % 3. Extract training features & estimate training mask.
+    train_data_features = struct2features(train_data_mix);
+    train_data_features = train_data_features';
+    maskTrain    = mask_seq_gen(train_data_clean, train_data_noise);
     
-    N      = 1 + FFTLength/2;
-    P_mix0 = P_mix0(N-1:end,:);
-    P_clean    = P_clean(N-1:end,:);
-    P_noise    = P_noise(N-1:end,:);
+    % 4. Extract validation features & estimate validation mask.
+    validation_data_features = struct2features(validation_data_mix);
+    validation_data_features = validation_data_features';
+    maskValidation    = mask_seq_gen(validation_data_clean, validation_data_noise);
     
-    P_mix = log(abs(P_mix0) + eps);
-    MP    = mean(P_mix(:));
-    SP    = std(P_mix(:));
-    P_mix = (P_mix - MP) / SP;
-
-    P_Val_mix0 = stft(mixValidate,Fs,'Window',win,'OverlapLength',OverlapLength,'FFTLength',FFTLength);
-    P_Val_clean    = abs(stft(val_clean_sequenced,Fs,'Window',win,'OverlapLength',OverlapLength,'FFTLength',FFTLength));
-    P_Val_noise    = abs(stft(val_noise_sequenced,Fs,'Window',win,'OverlapLength',OverlapLength,'FFTLength',FFTLength));
-
-    P_Val_mix0 = P_Val_mix0(N-1:end,:);
-    P_Val_clean    = P_Val_clean(N-1:end,:);
-    P_Val_noise    = P_Val_noise(N-1:end,:);
-
-    P_Val_mix = log(abs(P_Val_mix0) + eps);
-    MP        = mean(P_Val_mix(:));
-    SP        = std(P_Val_mix(:));
-    P_Val_mix = (P_Val_mix - MP) / SP;
-
-    target_power = P_clean;
-    noise_power = P_noise;
-    val_target_power = P_Val_clean;
-    val_noise_power = P_Val_noise;
+    % 5. Pre process data.
+    framesize     = 480;
+    maskFrameSize = 480;
+    seqLen        = 5;
+    seqOverlap    = 2;
     
-    maskTrain    = (target_power ./ (target_power + noise_power + eps));
-    maskValidate = (val_target_power ./ (val_target_power + val_noise_power + eps));
-
-    seqLen        = 20;
-    seqOverlap    = 10;
-    mixSequences  = zeros(1 + FFTLength/2,seqLen,1,0);
-    maskSequences = zeros(1 + FFTLength/2,seqLen,1,0);
+    N      = 1 + framesize/2;
+    M      = 1 + maskFrameSize/2;
+    mixSequences  = zeros(N,seqLen,1,0);
+    maskSequences = zeros(M,seqLen,1,0);
 
     loc = 1;
-    while loc < size(P_mix,2) - seqLen
-        mixSequences(:,:,:,end+1)  = P_mix(:,loc:loc+seqLen-1); 
-        maskSequences(:,:,:,end+1) = maskTrain(:,loc:loc+seqLen-1); 
+    while loc < size(train_data_features,2) - seqLen
+        mixSequences(:,:,:,end+1)  = train_data_features(:,loc:loc+seqLen-1); 
         loc                        = loc + seqOverlap;
     end
     
-    
-    mixValSequences  = zeros(1 + FFTLength/2,seqLen,1,0);
-    maskValSequences = zeros(1 + FFTLength/2,seqLen,1,0);
-    seqOverlap       = seqLen;
-
     loc = 1;
-    while loc < size(P_Val_mix,2) - seqLen
-        mixValSequences(:,:,:,end+1)  = P_Val_mix(:,loc:loc+seqLen-1);
-        maskValSequences(:,:,:,end+1) = maskValidate(:,loc:loc+seqLen-1);
+    while loc < size(maskTrain,2) - seqLen
+        maskSequences(:,:,:,end+1) = maskTrain(:,loc:loc+seqLen-1);
+        loc                        = loc + seqOverlap;
+    end
+    
+    mixValSequences  = zeros(N,seqLen,1,0);
+    maskValSequences = zeros(M,seqLen,1,0);
+    
+    seqOverlap       = seqLen;
+    
+    loc = 1;
+    while loc < size(validation_data_features,2) - seqLen
+        mixValSequences(:,:,:,end+1)  = validation_data_features(:,loc:loc+seqLen-1);
         loc                           = loc + seqOverlap;
     end
-
-    % Train the baseline model.
-    [speech_separation_net, validation_seq] = dnn_baseline(seqLen, mixSequences, ...
+    
+    loc = 1;
+    while loc < size(maskValidation,2) - seqLen
+        maskValSequences(:,:,:,end+1)  = maskValidation(:,loc:loc+seqLen-1);
+        loc                            = loc + seqOverlap;
+    end
+%     disp(size(mixSequences));
+%     disp(size(mixValSequences));
+%     disp(size(maskSequences));
+%     disp(size(maskValSequences));
+%     return;
+    % 6. Finally, train the baseline model.
+    [speech_separation_net, validation_seq] = dnn_baseline(N*seqLen,...
+                                         M*seqLen, ...
+                                         mixSequences, ...
                                          mixValSequences, maskSequences, ...
                                          maskValSequences,...
-                                         true,...
-                                         FFTLength);
+                                         true);
 end
