@@ -1,4 +1,4 @@
-function [train_data, val_data] = gen_train_data(clean_path, noise_path, samples, val_perc, val_snr, train_snr)
+function [train_data_struct, val_data_struct] = gen_train_data(clean_path, noise_path, samples, val_perc, val_snr, train_snr, save)
     % GEN_TRAIN_DATA: This method generates training and validation data;
     clean_ads = audioDatastore(clean_path);
     noise_ads = audioDatastore(noise_path);
@@ -19,5 +19,9 @@ function [train_data, val_data] = gen_train_data(clean_path, noise_path, samples
         else
             skip_add_train = false;
         end
+    end
+    if save
+        save("../data/training_seq.mat",train_data_struct);
+        save("../data/validation_seq.mat", val_data_struct);
     end
 end
