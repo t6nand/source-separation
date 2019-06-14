@@ -1,4 +1,4 @@
-function [noisy_mixture, clean, noise] = gen_noisy_audio(clean_path, noise_path, snr)
+function [noisy_mixture_struct, clean_struct, noise_struct] = gen_noisy_audio(clean_ads, noise_ads, snr)
     % GEN_NOISY_AUDIO: Thsi method generates and saves the randomly created
     % noisy speech audio files using clean speech and noise interferers.
     [s, n] = randomize(clean_path, noise_path); % Randomly pick up a speech and noise object.
@@ -19,17 +19,18 @@ function [noisy_mixture, clean, noise] = gen_noisy_audio(clean_path, noise_path,
     clean_aud = clean_aud/ampAdj;
     noisy_aud = noisy_aud/ampAdj;
 
-    noisy_mixture = noisy_aud + clean_aud;
-    
     if snr ~= 0
-        noisy_mixture = signal_at_snr(noisy_mixture, snr);
+        noisy_mixture = signal_at_snr(clean_aud, noisy_aud, snr);
+    else
+        noisy_mixture = noisy_aud + clean_aud;
     end
     
-    noisy_mixture = noisy_mixture / max(abs(noisy_mixture)); % Noisy audio generated.
     clean = clean_aud;
     noise = noisy_aud;
 end
 
-function [desired_sig] = signal_at_snr(sig, snr)
-    desired_sig = awgn(sig, snr, 'measured');
+function [desired_sig] = signal_at_snr(sig, noise, SNR)
+    signal_power = (1/length(sig))*sum(sig.*sig);
+    noise_variance = signal_power / ( 10^(SNR/10) ); 
+    desired_sig = sig + sqrt(noise_variance)/std(noise)*noise(1:length(sig));
 end
