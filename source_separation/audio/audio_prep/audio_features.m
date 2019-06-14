@@ -57,13 +57,15 @@ classdef audio_features
         
         function obj = calc_stft(obj, au)
             % Function to evaluate STFT of audio.
-            win = hamming(obj.window_length,'Periodic'); % TODO: Analyse different windows.
+            win = hann(obj.window_length,'Periodic'); % TODO: Analyse different windows.
             FFTLength = obj.window_length;
             [obj.stft_feats, obj.stft_freq] = stft(...
                 au.get_sampled_audio_mono(), ...
                 'Window', win, ...
                 'OverlapLength',obj.overlap_length, ...
                 'FFTLength', FFTLength);
+            N      = 1 + FFTLength/2;
+            obj.stft_feats = obj.stft_feats(N-1:end,:);
         end
         
     end
