@@ -13,14 +13,16 @@ function [] = test_baseline(clean_files, noise_files)
     validation_data_noise = validation_data_struct(:,3);
     
     % 3. Extract training features & estimate training mask.
-    train_data_features = struct2features(train_data_mix);
+    [train_data_features, maskTrain] = struct2features(train_data_mix,...
+                                                            train_data_clean,...
+                                                            train_data_noise);
     train_data_features = train_data_features';
-    maskTrain    = mask_seq_gen(train_data_clean, train_data_noise);
     
     % 4. Extract validation features & estimate validation mask.
-    validation_data_features = struct2features(validation_data_mix);
+    [validation_data_features, maskValidation] = struct2features(validation_data_mix,...
+                                                validation_data_clean,...
+                                                validation_data_noise);
     validation_data_features = validation_data_features';
-    maskValidation    = mask_seq_gen(validation_data_clean, validation_data_noise);
     
     % 5. Pre process data.
     framesize     = 480;

@@ -6,7 +6,7 @@ function [] = baseline_prediction(clean_path, noise_path, snr)
     for i=1:50
         [mixture, clean, ~] = gen_noisy_audio(speech, noise, snr);
 
-        Fs            = 16000;
+        Fs           = 8000;
         mixture_feat = audio_features(mixture);
         frameLength  = 480;
         N = 1 + frameLength/2;
