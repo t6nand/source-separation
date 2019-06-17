@@ -42,9 +42,11 @@ function [] = baseline_prediction(clean_path, noise_path, snr)
 
          gen_estimated_files = true;
          if gen_estimated_files
-             audiowrite(['~/ex1/mix/', num2str(i), '.wav'], mixture.get_sampled_audio_mono(), Fs);
-             audiowrite(['~/ex1/clean/',num2str(i),'.wav'], clean.get_sampled_audio_mono(), Fs);
-             audiowrite(['~/ex1/estimated/', num2str(i), '.wav'], soft_estimate, Fs);
+             mixture_out = mixture.get_sampled_audio_mono() / max(abs(mixture.get_sampled_audio_mono()));
+             audiowrite(['~/ex3/SNR_0/mix/', num2str(i), '.wav'], mixture_out, Fs);
+             clean_out = clean.get_sampled_audio_mono() / max(abs(clean.get_sampled_audio_mono()));
+             audiowrite(['~/ex3/SNR_0/clean/',num2str(i),'.wav'], clean_out, Fs);
+             audiowrite(['~/ex3/SNR_0/estimated/', num2str(i), '.wav'], soft_estimate, Fs);
          end
     end
 end
