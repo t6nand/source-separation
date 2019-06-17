@@ -4,7 +4,7 @@ Dataset:
 	Clean speech audio dataset from: LibriSpeech
 	Non Speech Interferers dataset from: Google audiosetdata
 
-	Training using: 500 noisy mixture samples at different SNR levels (viz. 0 SNR, -2 SNR, -5 SNR, +2 SNR, +5 SNR)
+	Training using: 500 noisy mixture samples at different SNR levels (viz. 0 SNR, -2 SNR)
 
 Audio Features:
 	1. STFT
@@ -16,7 +16,7 @@ Model:
 		3. 1 Output Layer using regression layer with 1205 neurons.
        
 Training Related Information:
-        1. Model size: Roughly 215 MB.
+        1. GPU Memory usage: Roughly 215 MB.
         2. GPU utilization: Roughly 55%.
 
 Performance Results:
@@ -136,3 +136,120 @@ Performance Results:
                         clean/48.wav	   estimated/48.wav	   2.251	     1.858	   16000	           nb
                         clean/49.wav	   estimated/49.wav	   3.644	     3.746	   16000	           nb
                         clean/50.wav	   estimated/50.wav	   1.665	     1.408	   16000	           nb
+                    
+                2. -2 dB SNR scenario:
+                    a. DNN Validation RMSE after 10 epochs: 8.8267 (Refer analysis image for experiment 1.)
+                    b. STOI scores: Avg. STOI - 0.7043984
+                    c. PESQ scores:
+                                   Avg. PESQMOS - 1.77678
+                                   Avg. MOSLQO  - 1.51318
+
+                    d. Performance evaluation dump:
+                        
+                       STOI:
+                        
+                        IRM based STOI - Soft Mask : 0.72356
+                        IRM based STOI - Soft Mask : 0.8033
+                        IRM based STOI - Soft Mask : 0.6801
+                        IRM based STOI - Soft Mask : 0.74996
+                        IRM based STOI - Soft Mask : 0.72053
+                        IRM based STOI - Soft Mask : 0.88044
+                        IRM based STOI - Soft Mask : 0.82501
+                        IRM based STOI - Soft Mask : 0.77601
+                        IRM based STOI - Soft Mask : 0.74301
+                        IRM based STOI - Soft Mask : 0.60202
+                        IRM based STOI - Soft Mask : 0.8319
+                        IRM based STOI - Soft Mask : 0.49407
+                        IRM based STOI - Soft Mask : 0.8074
+                        IRM based STOI - Soft Mask : 0.69151
+                        IRM based STOI - Soft Mask : 0.62224
+                        IRM based STOI - Soft Mask : 0.58774
+                        IRM based STOI - Soft Mask : 0.89326
+                        IRM based STOI - Soft Mask : 0.80027
+                        IRM based STOI - Soft Mask : 0.65301
+                        IRM based STOI - Soft Mask : 0.60096
+                        IRM based STOI - Soft Mask : 0.80977
+                        IRM based STOI - Soft Mask : 0.6102
+                        IRM based STOI - Soft Mask : 0.6622
+                        IRM based STOI - Soft Mask : 0.59609
+                        IRM based STOI - Soft Mask : 0.86183
+                        IRM based STOI - Soft Mask : 0.50929
+                        IRM based STOI - Soft Mask : 0.69837
+                        IRM based STOI - Soft Mask : 0.61124
+                        IRM based STOI - Soft Mask : 0.68196
+                        IRM based STOI - Soft Mask : 0.61579
+                        IRM based STOI - Soft Mask : 0.79478
+                        IRM based STOI - Soft Mask : 0.70561
+                        IRM based STOI - Soft Mask : 0.6509
+                        IRM based STOI - Soft Mask : 0.69797
+                        IRM based STOI - Soft Mask : 0.68288
+                        IRM based STOI - Soft Mask : 0.67335
+                        IRM based STOI - Soft Mask : 0.63371
+                        IRM based STOI - Soft Mask : 0.62047
+                        IRM based STOI - Soft Mask : 0.80464
+                        IRM based STOI - Soft Mask : 0.57838
+                        IRM based STOI - Soft Mask : 0.67056
+                        IRM based STOI - Soft Mask : 0.6451
+                        IRM based STOI - Soft Mask : 0.68987
+                        IRM based STOI - Soft Mask : 0.72256
+                        IRM based STOI - Soft Mask : 0.82295
+                        IRM based STOI - Soft Mask : 0.70015
+                        IRM based STOI - Soft Mask : 0.81701
+                        IRM based STOI - Soft Mask : 0.6688
+                        IRM based STOI - Soft Mask : 0.72161
+                        IRM based STOI - Soft Mask : 0.77558
+                       
+                       
+                       PESQ:
+                        
+                        REFERENCE        DEGRADED	         PESQMOS MOSLQO	 SAMPLE_FREQ	MODE
+                        clean/1.wav      estimated/1.wav	 1.997	 1.629	 16000	        nb
+                        clean/2.wav      estimated/2.wav	 2.050	 1.672	 16000	        nb
+                        clean/3.wav      estimated/3.wav	 1.977	 1.613	 16000	        nb
+                        clean/4.wav      estimated/4.wav	 1.557	 1.352	 16000	        nb
+                        clean/5.wav      estimated/5.wav	 2.021	 1.648	 16000	        nb
+                        clean/6.wav      estimated/6.wav	 2.682	 2.369	 16000	        nb
+                        clean/7.wav      estimated/7.wav	 2.194	 1.802	 16000	        nb
+                        clean/8.wav      estimated/8.wav	 1.879	 1.541	 16000	        nb
+                        clean/9.wav      estimated/9.wav	 2.281	 1.888	 16000	        nb
+                        clean/10.wav	 estimated/10.wav	 1.725	 1.442	 16000	        nb
+                        clean/11.wav	 estimated/11.wav	 1.730	 1.445	 16000	        nb
+                        clean/12.wav	 estimated/12.wav	 1.871	 1.536	 16000	        nb
+                        clean/13.wav	 estimated/13.wav	 1.707	 1.432	 16000	        nb
+                        clean/14.wav	 estimated/14.wav	 1.383	 1.277	 16000	        nb
+                        clean/15.wav	 estimated/15.wav	 1.606	 1.377	 16000	        nb
+                        clean/16.wav	 estimated/16.wav	 1.614	 1.381	 16000	        nb
+                        clean/17.wav	 estimated/17.wav	 1.754	 1.459	 16000	        nb
+                        clean/18.wav	 estimated/18.wav	 2.214	 1.822	 16000	        nb
+                        clean/19.wav	 estimated/19.wav	 2.051	 1.673	 16000	        nb
+                        clean/20.wav	 estimated/20.wav	 1.548	 1.348	 16000	        nb
+                        clean/21.wav	 estimated/21.wav	 1.873	 1.537	 16000	        nb
+                        clean/22.wav	 estimated/22.wav	 1.268	 1.236	 16000	        nb
+                        clean/23.wav	 estimated/23.wav	 1.998	 1.630	 16000	        nb
+                        clean/24.wav	 estimated/24.wav	 1.528	 1.339	 16000	        nb
+                        clean/25.wav	 estimated/25.wav	 2.120	 1.734	 16000	        nb
+                        clean/26.wav	 estimated/26.wav	 1.220	 1.220	 16000	        nb
+                        clean/27.wav	 estimated/27.wav	 1.957	 1.598	 16000	        nb
+                        clean/28.wav	 estimated/28.wav	 1.496	 1.324	 16000	        nb
+                        clean/29.wav	 estimated/29.wav	 1.422	 1.292	 16000	        nb
+                        clean/30.wav	 estimated/30.wav	 1.441	 1.300	 16000	        nb
+                        clean/31.wav	 estimated/31.wav	 1.847	 1.519	 16000	        nb
+                        clean/32.wav	 estimated/32.wav	 1.690	 1.422	 16000	        nb
+                        clean/33.wav	 estimated/33.wav	 1.962	 1.602	 16000	        nb
+                        clean/34.wav	 estimated/34.wav	 1.277	 1.239	 16000	        nb
+                        clean/35.wav	 estimated/35.wav	 1.802	 1.490	 16000	        nb
+                        clean/36.wav	 estimated/36.wav	 1.322	 1.255	 16000	        nb
+                        clean/37.wav	 estimated/37.wav	 1.302	 1.248	 16000	        nb
+                        clean/38.wav	 estimated/38.wav	 2.385	 2.001	 16000	        nb
+                        clean/39.wav	 estimated/39.wav	 1.721	 1.440	 16000	        nb
+                        clean/40.wav	 estimated/40.wav	 0.922	 1.144	 16000	        nb
+                        clean/41.wav	 estimated/41.wav	 1.599	 1.373	 16000	        nb
+                        clean/42.wav	 estimated/42.wav	 1.716	 1.437	 16000	        nb
+                        clean/43.wav	 estimated/43.wav	 1.376	 1.274	 16000	        nb
+                        clean/44.wav	 estimated/44.wav	 1.891	 1.549	 16000	        nb
+                        clean/45.wav	 estimated/45.wav	 1.866	 1.532	 16000	        nb
+                        clean/46.wav	 estimated/46.wav	 2.308	 1.917	 16000	        nb
+                        clean/47.wav	 estimated/47.wav	 1.984	 1.619	 16000	        nb
+                        clean/48.wav	 estimated/48.wav	 1.998	 1.630	 16000	        nb
+                        clean/49.wav	 estimated/49.wav	 1.774	 1.472	 16000	        nb
+                        clean/50.wav	 estimated/50.wav	 1.933	 1.580	 16000	        nb                
