@@ -18,6 +18,9 @@ classdef wav < audio_interface % This class inherits AUDIO_INTERFACE
                 obj.sampling_rate = Fs;
             end
             obj.num_channels = size(obj.sampled_audio_original, 2); 
+            [P,Q] = rat(8000/obj.sampling_rate);
+            obj.sampled_audio_original = resample(obj.sampled_audio_original, P, Q);
+            obj.sampling_rate = 8000;
         end
         
         function wav_read = get_sampled_audio(obj)
