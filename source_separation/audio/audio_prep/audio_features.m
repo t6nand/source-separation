@@ -106,26 +106,23 @@ classdef audio_features
 %             if isempty(obj.mfcc_coeffs)
 %                 obj = obj.calc_mfcc(aud);
 %             end
-%             if isempty(obj.pitch_coeffs)
-%                 obj = obj.calc_pitch(aud);
-%             end
             if isempty(obj.stft_feats)
                 obj = obj.calc_stft(aud);
             end
             
-%             obj.normalized_features = zeros(size(obj.gfcc_coeffs,1), 7*size(obj.gfcc_coeffs,2) + size(obj.stft_feats,1));
-%             obj.normalized_features(:,1:14) =  obj.gfcc_coeffs;
-%             obj.normalized_features(:,15:28) = obj.gfcc_delta;
-%             obj.normalized_features(:,29:42) = obj.gfcc_delta_delta;
-%             obj.normalized_features(:,43:56) = obj.mfcc_coeffs;
-%             obj.normalized_features(:,57:70) = obj.mfcc_delta;
-%             obj.normalized_features(:,71:84) = obj.mfcc_delta_delta;
-%             norm_pitch = [obj.pitch_coeffs, zeros(size(obj.pitch_coeffs,1),13)];
-%             obj.normalized_features(:,85:98) = norm_pitch;
-            norm_stft = log(abs(obj.stft_feats)+eps);
+%             if isempty(obj.pitch_coeffs)
+%                 obj = obj.calc_pitch(aud);
+%             end
+%             
+%             norm_pitch = [obj.pitch_coeffs zeros(size(obj.pitch_coeffs, 1), 83)];
+            norm_stft = log(abs(obj.stft_feats) + eps);
             norm_stft = norm_stft';
-%             obj.normalized_features(:,99:end) = norm_stft;
-            obj.normalized_features = norm_stft;
+
+%             if isempty(obj.coch)
+%                 obj = obj.calc_cochleagram(aud);
+%             end
+            obj.normalized_features = [norm_stft];
+            
             m = mean(obj.normalized_features(:));
             s = std(obj.normalized_features(:));
             obj.normalized_features = (obj.normalized_features - m) ./ s;
@@ -230,9 +227,7 @@ classdef audio_features
         function norm_feat = get_normalised_features(obj, aud)
            % GET_NORMALISED_FEATURES: Getter function to obtain normalised
            % feature vector for an audio to ensure dimensionless and 
-           % magnitude vice normalised data. NOTE: Input Data normalization
-           % should be handled separately before passing on to Learning
-           % Machine.
+           % magnitude vice normalised data. 
             if isempty(obj.normalized_features)
                 obj = obj.calc_normalised_features(aud);
             end
