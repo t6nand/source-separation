@@ -161,7 +161,7 @@ classdef audio_features
                        if is_instance_of_audio_interface
                             this.window_length = floor(30e-3 * au.get_sampling_rate());
                             this.overlap_length = floor(0.25*this.window_length);
-                            this.freq_range = [50 8000];
+                            this.freq_range = [50 4000];
                        else
                             aud_fet_ex = MException('Incorrect_Initialization', ...
                             ' Incorrect object structure passed for feature extraction');
