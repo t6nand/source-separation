@@ -17,12 +17,24 @@ classdef audio_features
         pitch_locs
         stft_feats % PSD coefficients after STFT.
         stft_freq % Frequency components after STFT
+        coch % Cochleagram
         window_length % Tunable window length for feature extraction.
         overlap_length % Tunable overlap length for feature extraction.
         normalized_features % Normalised feature vector.
         freq_range % Frequency range to operate on. 
     end
     
+    methods (Static)
+      function out = setgetFilterBank(obj)
+         persistent gamma_filt_bank;
+         if nargin
+            disp("Creating Gammatone filter bank");
+            gamma_filt_bank = gammatoneFilterBank(obj.freq_range, 64, 8000);
+         end
+         out = gamma_filt_bank;
+      end
+    end
+   
     methods (Access = private) % Private methods:
         
         function obj = calc_gfcc(obj, au)
@@ -66,6 +78,20 @@ classdef audio_features
                 'FFTLength', FFTLength);
             N      = 1 + FFTLength/2;
             obj.stft_feats = obj.stft_feats(N-1:end,:);
+        end
+        
+        function obj = calc_cochleagram(obj, au)
+            % Function to evaluate cochleagram of audio.
+            if isempty(audio_features.setgetFilterBank())
+                audio_features.setgetFilterBank(obj);
+            end
+            if isempty(audio_features.setgetFilterBank())
+                gtgf = audio_features.setgetFilterBank(obj);
+            else
+                gtfb = audio_features.setgetFilterBank();
+            end
+            aud_res = gtfb(au.get_sampled_audio_mono());
+            obj.coch = cochleagram(aud_res', obj.window_length);
         end
         
         function obj = calc_normalised_features(obj,aud)
@@ -211,6 +237,15 @@ classdef audio_features
                 obj = obj.calc_normalised_features(aud);
             end
             norm_feat = obj.normalized_features;
+        end
+        
+        function coch = get_cochleagram(obj, aud)
+           % GET_COCHLEAGRAM: Getter function to obtain cochleagram
+           % of an audio.
+            if isempty(obj.coch)
+                obj = obj.calc_cochleagram(aud);
+            end
+            coch = obj.coch;
         end
     end    
 end
