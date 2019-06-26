@@ -20,7 +20,7 @@ imagesc(flipud(log(r+1)));
 % imagesc(flipud(r.^(1/2)));
 
 % x tick
-x_intv = 200;       % a tick every 200 ms
+x_intv = 400;       % a tick every 200 ms
 x = 0:round(x_intv/frame_rate):numFrame;
 x_label = x.*frame_rate./1000; % in seconds
 
@@ -33,10 +33,10 @@ y_label = round(cfs(round(y)));
 % set proper tick labels
 set(gca, 'XTick', x);
 set(gca, 'XTickLabel', x_label);
-xlabel('Time (minutes)');
+xlabel('Time (s)','FontSize',16);
 
 set(gca, 'YTick', y);
 set(gca, 'YTickLabel', fliplr(y_label));
-ylabel('Center Frequency (Hz)');
+ylabel('Center Frequency (Hz)','FontSize',16);
 
-
+set(gca,'FontSize',14);
