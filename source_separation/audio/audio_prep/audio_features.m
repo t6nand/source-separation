@@ -15,6 +15,7 @@ classdef audio_features
         mfcc_locs
         pitch_coeffs % Pitch components in audio.
         pitch_locs
+        spect %Spectrogram
         stft_feats % PSD coefficients after STFT.
         stft_freq % Frequency components after STFT
         coch % Cochleagram
@@ -46,7 +47,17 @@ classdef audio_features
                                       'WindowLength',obj.window_length, ...
                                       'OverlapLength',obj.overlap_length);
         end
-
+        
+        
+        function obj=calc_spectrogram(obj,au)
+            %Function to get spectrogram of a sequence
+            win = hann(obj.window_length,'Periodic');
+            FFTLength=obj.window_length;
+            obj.spect=spectrogram(au.get_sampled_audio_mono(), ...
+                win,obj.overlap_length, FFTLength);
+        end
+                
+            
         function obj = calc_mfcc(obj, au)
             % Function to evaluate MFCC features.
             [obj.mfcc_coeffs,obj.mfcc_delta,obj.mfcc_delta_delta,obj.mfcc_locs] = mfcc(...
@@ -106,21 +117,29 @@ classdef audio_features
 %             if isempty(obj.mfcc_coeffs)
 %                 obj = obj.calc_mfcc(aud);
 %             end
-            if isempty(obj.stft_feats)
-                obj = obj.calc_stft(aud);
+%            if isempty(obj.stft_feats)
+%                obj = obj.calc_stft(aud);
+%            end
+            
+            if isempty(obj.spect)
+                obj = obj.calc_spectrogram(aud);
             end
+
 %             if isempty(obj.pitch_coeffs)
 %                 obj = obj.calc_pitch(aud);
 %             end
 %             
 %             norm_pitch = [obj.pitch_coeffs zeros(size(obj.pitch_coeffs, 1), 83)];
-            norm_stft = log(abs(obj.stft_feats) + eps);
-            norm_stft = norm_stft';
+%            norm_stft = log(abs(obj.stft_feats) + eps);
+%            norm_stft = norm_stft';
+            norm_spectrogram = log(abs(obj.stft_feats) + eps);
+            norm_spectrogram = norm_spectrogram';
 
 %             if isempty(obj.coch)
 %                 obj = obj.calc_cochleagram(aud);
 %             end
-            obj.normalized_features = [norm_stft];
+%            obj.normalized_features = [norm_stft];
+            obj.normalized_features = [norm_spectrogram];
             
             m = mean(obj.normalized_features(:));
             s = std(obj.normalized_features(:));
@@ -222,6 +241,15 @@ classdef audio_features
             stft = obj.stft_feats;
             freqs = obj.stft_freq;
         end
+        function spectro = get_spectrogram(obj, aud)
+           % GET_STFT: Getter function to obtain Spectrogram. Uses Lazy Evaluation.
+            if isempty(obj.spect)
+                obj = obj.calc_spectrogram(aud);
+            end
+            spectro = obj.spect;
+            
+        end
+
         
         function norm_feat = get_normalised_features(obj, aud)
            % GET_NORMALISED_FEATURES: Getter function to obtain normalised
