@@ -109,7 +109,6 @@ classdef audio_features
             if isempty(obj.stft_feats)
                 obj = obj.calc_stft(aud);
             end
-            
 %             if isempty(obj.pitch_coeffs)
 %                 obj = obj.calc_pitch(aud);
 %             end
