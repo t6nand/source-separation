@@ -19,7 +19,7 @@ function [normalised_feature, mask_seq] = struct2features_spectrogram(mixture_st
             norm_feats = a_f.get_normalised_features(mixture_struct(i,1));
         catch
             continue;
-         end
+        end
         mask = (c_power ./ (c_power + n_power + eps));
         mask = mask.^0.5;
         mask2d = [real(mask) imag(mask)];
