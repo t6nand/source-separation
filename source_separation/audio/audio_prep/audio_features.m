@@ -132,7 +132,7 @@ classdef audio_features
 %             norm_pitch = [obj.pitch_coeffs zeros(size(obj.pitch_coeffs, 1), 83)];
 %            norm_stft = log(abs(obj.stft_feats) + eps);
 %            norm_stft = norm_stft';
-            norm_spectrogram = log(abs(obj.stft_feats) + eps);
+            norm_spectrogram = log(abs(obj.spect) + eps);
             norm_spectrogram = norm_spectrogram';
 
 %             if isempty(obj.coch)
