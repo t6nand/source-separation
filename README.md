@@ -4,9 +4,9 @@ This project aims at monaural speech separation using deep learning, where a spe
 
 ## Dataset
 
-### Clean Speech dataset: TIMIT
+### Clean Speech dataset: [TIMIT](https://catalog.ldc.upenn.edu/LDC93S1)
 
-### Noise dataset: MUSAN
+### Noise dataset: [MUSAN](https://www.openslr.org/17/)
 
 ### Training target: Ideal Ratio Mask (IRM) 
 IRM is calculated using spectrogram and/or cochleagram.
