@@ -21,7 +21,7 @@ DNN_0:
     Fully Connected Layer(1024), batchnormalization,reLU
     Fully Connected Layer(1024), batchnormalization,reLU
     Fully Connected Layer(1024), batchnormalization,reLU
-    Fully Connected Layer(121), regressionLayer
+    Fully Connected Layer(<variable nodes>), regressionLayer
 ```
 ```        
 DNN_1: 
