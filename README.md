@@ -8,6 +8,14 @@ This project aims at monaural speech separation using deep learning, where a spe
 
 ### Noise dataset: MUSAN
 
+### Training target: Ideal Ratio Mask (IRM) 
+IRM is calculated using spectrogram and/or cochleagram.
+                     
+#### Note: 
+IRM can be thresholded based on some local criterion 
+to obtain a binary mask. As a proof of concept, IRM to IBM
+calculation is also made available.
+
 ## Models Used:
 
 ### Feed forward Deep Neural Network:
