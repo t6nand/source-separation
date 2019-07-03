@@ -15,7 +15,7 @@ function [] = train_test_model(clean_files, noise_files, numSamples, val_perc, t
     %              noise.
     % save_model:  Flag true/false to save trained model on the local file
     %              system.
-    % model_type:  Type of model. 1 for DNN, 2 for CNN.
+    % model_type:  Type of model. 1 for DNN, 2 for CNN, 3 for LSTM.
     % model_id:    ID of models to train on as available in the
     %              source_separation/model foldder.
     
@@ -37,22 +37,49 @@ function [] = train_test_model(clean_files, noise_files, numSamples, val_perc, t
         validation_data_noise = validation_data_struct(:,3);
 
         % 3. Extract training features & estimate training mask.
-        tic;[train_data_features, maskTrain] = struct2features_spectrogram(train_data_mix,...
+        tic;[train_data_features, maskTrain] = struct2features(train_data_mix,...
                                                                 train_data_clean,...
                                                                 train_data_noise);toc;
         % 4. Extract validation features & estimate validation mask.
-        tic;[validation_data_features, maskValidation] = struct2features_spectrogram(validation_data_mix,...
+        tic;[validation_data_features, maskValidation] = struct2features(validation_data_mix,...
                                                     validation_data_clean,...
                                                     validation_data_noise);toc;
         
         % 5. Reshape Training and validation data to be processed.
-        mixSequences  = reshape(train_data_features, 1, 1, size(train_data_features,1), size(train_data_features, 2));
-        maskSequences = reshape(maskTrain, 1, 1, size(maskTrain,1), size(maskTrain, 2));
-        mixValSequences = reshape(validation_data_features, 1, 1, size(validation_data_features,1), size(validation_data_features, 2));
-        maskValSequences = reshape(maskValidation, 1, 1, size(maskValidation,1), size(maskValidation, 2));
-        inNeurons = size(mixSequences, 3);
-        outNeurons = size(maskSequences, 3);
+%         mixSequences  = reshape(train_data_features, 1, 1, size(train_data_features,1), size(train_data_features, 2));
+%         maskSequences = reshape(maskTrain, 1, 1, size(maskTrain,1), size(maskTrain, 2));
+%         mixValSequences = reshape(validation_data_features, 1, 1, size(validation_data_features,1), size(validation_data_features, 2));
+%         maskValSequences = reshape(maskValidation, 1, 1, size(maskValidation,1), size(maskValidation, 2));
+%         inNeurons = size(mixSequences, 3);
+%         outNeurons = size(maskSequences, 3);
 
+%         mixSequences = double.empty();
+%         for index = 1: 20 : (size(train_data_features,1)-40 + 1)
+%             F = train_data_features(index:index+40 - 1,:);
+%             mixSequences(:,:,end+1) = F; 
+%         end
+%         
+%         maskSequences = double.empty();
+%         for index = 1: 20 : (size(maskTrain,1)-40 + 1)
+%             F = maskTrain(index:index+40 - 1,:);
+%             maskSequences(:,:,end+1) = F; 
+%         end
+%         
+%         mixValSequences = double.empty();
+%         for index = 1: 20 : (size(validation_data_features,1)-40 + 1)
+%             F = validation_data_features(index:index+40 - 1,:);
+%             mixValSequences(:,:,end+1) = F; 
+%         end
+%         
+%         maskValSequences = double.empty();
+%         for index = 1: 20 : (size(maskValidation,1)-40 + 1)
+%             F = maskValidation(index:index+40 - 1,:);
+%             maskValSequences(:,:,end+1) = F; 
+%         end
+        
+        inNeurons = 42;
+        outNeurons = 121;
+        
 %         disp([size(train_data_features), size(maskTrain)]);
 %         disp([inNeurons, outNeurons]);
 %         disp([size(mixSequences), size(maskSequences)]);
@@ -98,14 +125,29 @@ function [] = train_test_model(clean_files, noise_files, numSamples, val_perc, t
                     case 2
                         [speech_separation_net, ~] = cnn1(inNeurons,...
                                                              outNeurons, ...
-                                                             mixSequences, ...
-                                                             mixValSequences, ...
-                                                             maskSequences, ...
-                                                             maskValSequences,...
+                                                             mixSequences', ...
+                                                             mixValSequences', ...
+                                                             maskTrain', ...
+                                                             maskValidation',...
                                                              dnn_name,...
                                                              true);
                     otherwise
                         disp("No such CNN model to train!!!");
+                        return;
+                end
+            case 3
+                switch model_id
+                    case 1
+                        [speech_separation_net, ~] = bilstm(inNeurons,...
+                                                             outNeurons, ...
+                                                             train_data_features, ...
+                                                             validation_data_features, ...
+                                                             maskTrain, ...
+                                                             maskValidation,...
+                                                             dnn_name,...
+                                                             true);
+                    otherwise
+                        disp("No such LSTM to train!!!!");
                         return;
                 end
             otherwise

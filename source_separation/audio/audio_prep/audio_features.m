@@ -94,10 +94,7 @@ classdef audio_features
         function obj = calc_cochleagram(obj, au)
             % Function to evaluate cochleagram of audio.
             if isempty(audio_features.setgetFilterBank())
-                audio_features.setgetFilterBank(obj);
-            end
-            if isempty(audio_features.setgetFilterBank())
-                gtgf = audio_features.setgetFilterBank(obj);
+                gtfb = audio_features.setgetFilterBank(obj);
             else
                 gtfb = audio_features.setgetFilterBank();
             end
@@ -111,9 +108,9 @@ classdef audio_features
            % magnitude vice normalised data. NOTE: Input Data normalization
            % should be handled separately before passing on to Learning
            % Machine.
-%             if isempty(obj.gfcc_coeffs)
-%                 obj = obj.calc_gfcc(aud);
-%             end
+            if isempty(obj.gfcc_coeffs)
+                obj = obj.calc_gfcc(aud);
+            end
 %             if isempty(obj.mfcc_coeffs)
 %                 obj = obj.calc_mfcc(aud);
 %             end
@@ -121,9 +118,9 @@ classdef audio_features
 %                obj = obj.calc_stft(aud);
 %            end
             
-            if isempty(obj.spect)
-                obj = obj.calc_spectrogram(aud);
-            end
+%             if isempty(obj.spect)
+%                 obj = obj.calc_spectrogram(aud);
+%             end
 
 %             if isempty(obj.pitch_coeffs)
 %                 obj = obj.calc_pitch(aud);
@@ -132,14 +129,14 @@ classdef audio_features
 %             norm_pitch = [obj.pitch_coeffs zeros(size(obj.pitch_coeffs, 1), 83)];
 %            norm_stft = log(abs(obj.stft_feats) + eps);
 %            norm_stft = norm_stft';
-            norm_spectrogram = log(abs(obj.spect) + eps);
-            norm_spectrogram = norm_spectrogram';
+%             norm_spectrogram = log(abs(obj.spect) + eps);
+%             norm_spectrogram = norm_spectrogram';
 
 %             if isempty(obj.coch)
 %                 obj = obj.calc_cochleagram(aud);
 %             end
 %            obj.normalized_features = [norm_stft];
-            obj.normalized_features = [norm_spectrogram];
+            obj.normalized_features = [obj.gfcc_coeffs obj.gfcc_delta obj.gfcc_delta_delta];
             
             m = mean(obj.normalized_features(:));
             s = std(obj.normalized_features(:));
