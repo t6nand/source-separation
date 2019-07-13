@@ -1,6 +1,7 @@
 # source-separation
 
-This project aims at monaural speech separation using deep learning, where a speech audio is mixed with some interfering signal at some SNR levels (as a proof of concept, mixtures are tried at 0 SNR and -2 SNR). The estimation of separated speech audio is the evaluated for intelligebility using STOI scores and for quality by PESQ scores respectively.
+This project presents an implementation and evaluation of an end-to-end system for speech enhancement based source separation, in the monaural voice recordings. Speech Enhancement is achieved by applying a ratio mask to a time-frequency representation of the input signal and through a subsequent reconstruction for the estimated clean speech signal. The mask is estimated from the noisy mixture input data using deep learning machines which are trained on a dataset obtained by additive
+mixing of recordings of the clean speech and the different sources of noise at a particular signal-to-noise ratio. The expected intelligibility of the reconstructed audio is compared using the intelligibility metric STOI (Short-Time Objective Intelligebility). The quality of estimated clean speech post processing, is compared using the quality metric PESQ (Perceptual Evaluation of Speech Quality), as recommended by the ITU (International Telecommunication Union).
 
 ## Dataset
 
@@ -9,12 +10,10 @@ This project aims at monaural speech separation using deep learning, where a spe
 ### Noise dataset: [MUSAN](https://www.openslr.org/17/)
 
 ### Training target: Ideal Ratio Mask (IRM) 
-IRM is calculated using spectrogram and/or cochleagram.
+IRM is calculated using spectrogram/cochleagram.
                      
 #### Note: 
-IRM can be thresholded based on some local criterion 
-to obtain a binary mask. As a proof of concept, IRM to IBM
-calculation is also made available.
+IRM can be thresholded based on some local criterion to obtain a binary mask. As a proof of concept, IRM to IBM calculation is also made available.
 
 ## Models Used:
 
