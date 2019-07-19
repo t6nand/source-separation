@@ -18,6 +18,7 @@ classdef audio_features
         spect %Spectrogram
         stft_feats % PSD coefficients after STFT.
         stft_freq % Frequency components after STFT
+        stft_time
         coch % Cochleagram
         window_length % Tunable window length for feature extraction.
         overlap_length % Tunable overlap length for feature extraction.
@@ -82,7 +83,7 @@ classdef audio_features
             % Function to evaluate STFT of audio.
             win = hann(obj.window_length,'Periodic'); % TODO: Analyse different windows.
             FFTLength = obj.window_length;
-            [obj.stft_feats, obj.stft_freq] = stft(...
+            [obj.stft_feats, obj.stft_freq, obj.stft_time] = stft(...
                 au.get_sampled_audio_mono(), ...
                 'Window', win, ...
                 'OverlapLength',obj.overlap_length, ...
@@ -229,7 +230,7 @@ classdef audio_features
            p_locs = obj.pitch_locs;
         end
         
-        function [stft, freqs] = get_stft(obj, aud)
+        function [stft, freqs, times] = get_stft(obj, aud)
            % GET_STFT: Getter function to obtain STFT and
            % corresponding sample frequencis. Uses Lazy Evaluation.
             if isempty(obj.stft_feats)
@@ -237,6 +238,7 @@ classdef audio_features
             end
             stft = obj.stft_feats;
             freqs = obj.stft_freq;
+            times = obj.stft_time;
         end
         function spectro = get_spectrogram(obj, aud)
            % GET_STFT: Getter function to obtain Spectrogram. Uses Lazy Evaluation.
