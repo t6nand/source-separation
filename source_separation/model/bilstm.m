@@ -23,7 +23,7 @@ function [speech_separation_net, mix_sequences_validation]  = ...
         fullyConnectedLayer(final_nodes)
         regressionLayer];
 
-    maxEpochs=5;
+    maxEpochs=25;
     miniBatchSize=20; %To be decided keeping the sizes of features in mind to ensure minimum padding
     options_lstm = trainingOptions('adam', ...
         'MaxEpochs',maxEpochs, ...
@@ -41,11 +41,14 @@ function [speech_separation_net, mix_sequences_validation]  = ...
     
     if do_training
 %         analyzeNetwork(layers_cnn);
+%         try
         speech_separation_net = trainNetwork(mix_sequences_training, ...
                                              mask_sequence_training,...
                                              layers_lstm,...
                                              options_lstm);
-        save(dnn_name,'speech_separation_net'); 
+        save(dnn_name,'speech_separation_net');
+%         catch 
+%         end 
     else
         s = load(dnn_name);
         speech_separation_net = s.speech_separation_net;
