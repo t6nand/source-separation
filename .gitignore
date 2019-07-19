@@ -1,6 +1,10 @@
 .gitignore
 .*
+*.mat
 dataset*
 Dataset*
 DataSet*
 dataSet*
+resources/pesq/bin/
+resources/pesq/conform/
+pathdef*
