@@ -1,5 +1,0 @@
-[0] Config.pm:302> INFO - This is Biber 2.9
-[0] Config.pm:305> INFO - Logfile is 'aip_tapan_report.aux.blg'
-[23] biber:313> INFO - === Sat Jul 13, 2019, 13:24:01
-[122] Utils.pm:185> ERROR - Cannot find control file 'aip_tapan_report.aux.bcf'! - did you pass the "backend=biber" option to BibLaTeX?
-[122] Biber.pm:114> INFO - ERRORS: 1
