@@ -1,0 +1,21 @@
+\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
+\babel@toc {english}{}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Deep Learning based speech enhancement layouts\relax }}{4}{figure.caption.17}
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Generation of Noisy speech samples\relax }}{5}{figure.caption.20}
+\contentsline {figure}{\numberline {2.3}{\ignorespaces Different stages of spectrogram during speech enhancement\relax }}{6}{figure.caption.23}
+\contentsline {figure}{\numberline {2.4}{\ignorespaces Typical GFCC plot with log energy and 13 coefficients\relax }}{7}{figure.caption.25}
+\contentsline {figure}{\numberline {2.5}{\ignorespaces GFCC Extraction\relax }}{7}{figure.caption.26}
+\contentsline {figure}{\numberline {2.6}{\ignorespaces Typical MFCC plot with log enery and 13 coefficients\relax }}{8}{figure.caption.27}
+\contentsline {figure}{\numberline {2.7}{\ignorespaces Audio Feature Extraction using sub-band audio frames\relax }}{8}{figure.caption.29}
+\contentsline {figure}{\numberline {2.8}{\ignorespaces Pitch plot for an audio waveform\relax }}{9}{figure.caption.31}
+\contentsline {figure}{\numberline {2.9}{\ignorespaces Different stages of cochleagram during speech enhancement\relax }}{10}{figure.caption.33}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces A Baseline feedforward deep neural network with 5 layers\relax }}{12}{figure.caption.39}
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Sigmoid activation function.\relax }}{18}{figure.caption.63}
+\contentsline {figure}{\numberline {3.3}{\ignorespaces A feedforward deep neural network with 5 layers and biased sigmoid activation\relax }}{19}{figure.caption.64}
+\contentsline {figure}{\numberline {3.4}{\ignorespaces A CNN with 4 2-D Convolutional Layers and 2 downsampling 2-D Maxpooling Layers\relax }}{23}{figure.caption.85}
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Leaky reLU as compared to reLU\relax }}{24}{figure.caption.86}
+\addvspace {10\p@ }
+\addvspace {10\p@ }

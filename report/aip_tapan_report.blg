@@ -1,0 +1,18 @@
+[0] Config.pm:302> INFO - This is Biber 2.9
+[0] Config.pm:305> INFO - Logfile is 'aip_tapan_report.blg'
+[23] biber:313> INFO - === Tue Jul 16, 2019, 03:29:36
+[41] Biber.pm:371> INFO - Reading 'aip_tapan_report.bcf'
+[90] Biber.pm:857> INFO - Found 21 citekeys in bib section 0
+[100] Biber.pm:3981> INFO - Processing section 0
+[108] Biber.pm:4154> INFO - Looking for bibtex format file 'biblio.bib' for section 0
+[109] bibtex.pm:1468> INFO - LaTeX decoding ...
+[125] bibtex.pm:1294> INFO - Found BibTeX data source 'biblio.bib'
+[183] Utils.pm:169> WARN - BibTeX subsystem: warning: comma(s) at end of name (removing)
+[183] Utils.pm:169> WARN - BibTeX subsystem: author, warning: comma(s) at end of name (removing)
+[196] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[197] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[197] Biber.pm:3809> INFO - Sorting list 'none/global//global/global' of type 'entry' with template 'none' and locale 'en-US'
+[197] Biber.pm:3815> INFO - No sort tailoring available for locale 'en-US'
+[210] bbl.pm:617> INFO - Writing 'aip_tapan_report.bbl' with encoding 'UTF-8'
+[215] bbl.pm:720> INFO - Output to aip_tapan_report.bbl
+[215] Biber.pm:110> INFO - WARNINGS: 2

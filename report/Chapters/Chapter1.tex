@@ -1,0 +1,38 @@
+% Chapter 1
+
+\chapter{Introduction} % Main chapter title
+
+\label{Chapter1} % For referencing the chapter elsewhere, use \ref{Chapter1} 
+
+%----------------------------------------------------------------------------------------
+
+% Define some commands to keep the formatting separated from the content 
+\newcommand{\keyword}[1]{\textbf{#1}}
+\newcommand{\tabhead}[1]{\textbf{#1}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\file}[1]{\texttt{\bfseries#1}}
+\newcommand{\option}[1]{\texttt{\itshape#1}}
+
+%----------------------------------------------------------------------------------------
+
+\section{Why Source Separation?}
+For a healthy person it is an incredible feat to tune into a single conversation in a crowded room while being completely oblivious to background noise and other conversations that happen simultaneously. This ability for a person to solve the \enquote{Cocktail Party Problem}\cite{wiki:cock} is remarkable and very natural as a human. However, an estimated 5\% of the world’s population suffers from disabling hearing loss \cite{ref:who}. For the 466 million affected people the ability to perceive speech especially in the presence of background noise is significantly impaired. Since the perception of speech is crucial for being able to communicate verbally, this impairment has profound social and emotional consequences for the sufferers \cite{ref:who}.\par 
+Current hearing aids offer only limited relief as they cannot distinguish between speech and background noise and will simply opt to amplify both signals. This does not greatly help with the intelligibility. Hence, the focus should be on designing an “intelligent” system that can distinguish between the conversation and disruptive background noise in order to provide an improvement to hearing aids. It is not unconceivable that such systems would also be of great help to the people with a normal and healthy hearing considering the fact that listening to someone in a loud environment is still detrimental to the hearing. \par An estimated half of all cases of hearing loss in adults are caused by exposure to excessively loud noise \cite{ref:deb}. A system that can remove loud background noise but allow for unhindered conversation might therefore help prevent such cases of hearing loss.\par
+This project report contributes to these goals by comparing different implementations of supervised deep learning systems that can learn to enhance speech from background noise in monaural (single microphone) recordings. \par
+%----------------------------------------------------------------------------------------
+
+\section{Historical Work}
+The first approach to solve the Cocktail Party Problem was using the concept of \enquote{\textbf{Spectral Subtraction}}\cite{ref:spec_sub}. This approach makes an assumption that the clean speech signal has been corrupted by statistically independent additive noise. The power spectrum of the noise signal can be recovered approximately for stationary noise by taking the average of multiple signal frames. This estimated power spectrum is then subtracted from the mixed signal spectrum, keeping the phase information intact. The resulting subtraction results in less noise in the estimated signal but the quality of such estimation also tends to deteriorate considering the fact that many tones tend to appear and disappear rapidly in the reconstructed signal.\par
+The idea to use a deep learning machine in order to filter out background noise from speech recordings goes back three decades. In 1988 Tamura and Waibel \cite{ref:shin} showed that a four-layer feed-forward neural network could successfully be used to directly separate the waveforms of Japanese speech recordings from computer lab background noise. This network is small by the standards of today, but took weeks of training on a supercomputer of its time. The authors note that the perceived quality of the filtered audio was higher, but that intelligiblity did not improve.\par 
+Artificially adding noise to existing audio recordings is routinely used in supervised training of automatic speech recognition systems in order to improve their robustness towards environmental noise \cite{ref:awni}. Chen, Jitong and Wang \cite{ref:tong} follow an approach rooted in the computational auditory scene analysis (CASA). The idea is to predict an “Ideal Ratio Mask” (IRM) that describes the proportion of speech to noise energy in a frequency band at a given time. When the IRM is known, the clean speech signal can be reconstructed from the noisy signal by weighting each time frequency unit of the noisy recording according to its speech content.\par
+Huang, Kim, Hasegawa-Johnson and Smargdis further improve this approach by presenting a framework for separating arbitrarily many sources using recurrent neural networks (RNNs) using a discriminative training criterion\cite{ref:rnn}. They also move the time-frequency masking operation directly into a layer of the neural network in order to jointly optimize the network with the masking function.
+\par
+
+%----------------------------------------------------------------------------------------
+
+\section{Limitations}
+There are several assumptions made in this project which limit the direct application of the results in a real time situations. These limitations can however be overcome by acquiring more training data.
+\begin{itemize}
+\item While the recordings of noise included complex interactions of the sound sources with the environment like factory noise, waterfalls, engine noise, etc., the speech examples were considered from relataively simpler scenarios without any interaction of sound sources with the real world conditions. Hence, many effects like reverberated speech are not modeled.
+\item \textit{Lombard Effect \cite{wiki:lom}}: It is the ability of humans to alter their speaking style in order to allow for efficient verbal communication in a noisy environment. This too has not been considered. Hence, there is likely to be a mismatch between the prediction of the data considered in the project with the real world data.
+\end{itemize}

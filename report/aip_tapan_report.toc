@@ -1,0 +1,36 @@
+\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
+\babel@toc {english}{}
+\contentsline {chapter}{Declaration of Originality}{ii}{section*.1}
+\contentsline {chapter}{Acknowledgements}{iii}{section*.2}
+\contentsline {chapter}{Abstract}{iv}{section*.3}
+\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.11}
+\contentsline {section}{\numberline {1.1}Why Source Separation?}{1}{section.12}
+\contentsline {section}{\numberline {1.2}Historical Work}{1}{section.13}
+\contentsline {section}{\numberline {1.3}Limitations}{2}{section.14}
+\contentsline {chapter}{\numberline {2}Methodology}{3}{chapter.15}
+\contentsline {section}{\numberline {2.1}Supervised learning architecture for speech enhancement}{3}{section.16}
+\contentsline {section}{\numberline {2.2}Dataset}{3}{section.18}
+\contentsline {subsection}{\numberline {2.2.1}Generation of Noisy Mixture}{4}{subsection.19}
+\contentsline {section}{\numberline {2.3}Features}{4}{section.21}
+\contentsline {subsection}{\numberline {2.3.1}\textbf {Spectrogram}}{4}{subsection.22}
+\contentsline {subsection}{\numberline {2.3.2}\textbf {GFCC}}{6}{subsection.24}
+\contentsline {subsection}{\numberline {2.3.3}\textbf {MFCC}}{6}{subsection.28}
+\contentsline {subsection}{\numberline {2.3.4}\textbf {Pitch}}{8}{subsection.30}
+\contentsline {subsection}{\numberline {2.3.5}\textbf {Cochleagram}}{9}{subsection.32}
+\contentsline {section}{\numberline {2.4}Training Targets}{9}{section.34}
+\contentsline {subsection}{\numberline {2.4.1}IRM}{10}{subsection.35}
+\contentsline {chapter}{\numberline {3}Deep Learning Models}{11}{chapter.37}
+\contentsline {section}{\numberline {3.1}Baseline DNN model}{11}{section.38}
+\contentsline {subsection}{\numberline {3.1.1}Experiments with baseline DNN}{13}{subsection.43}
+\contentsline {section}{\numberline {3.2}DNN model based on biased sigmoid activation}{17}{section.62}
+\contentsline {subsection}{\numberline {3.2.1}Experiments with the DNN using biased activation}{18}{subsection.65}
+\contentsline {section}{\numberline {3.3}Deep Learning Model based on CNN}{23}{section.84}
+\contentsline {subsection}{\numberline {3.3.1}Experiments with the deep CNN}{25}{subsection.87}
+\contentsline {chapter}{\numberline {4}Performance Analysis and Conclusions}{27}{chapter.96}
+\contentsline {section}{\numberline {4.1}Intelligibility Analysis}{27}{section.97}
+\contentsline {section}{\numberline {4.2}Quality Analysis}{28}{section.99}
+\contentsline {section}{\numberline {4.3}\textbf {Conclusions}}{28}{section.101}
+\contentsline {section}{\numberline {4.4}\textbf {Future Prospects}}{29}{section.102}
+\contentsline {chapter}{\numberline {A}Performance Metrics}{31}{appendix.103}
+\contentsline {section}{\numberline {A.1}STOI}{31}{section.104}
+\contentsline {section}{\numberline {A.2}PESQ}{31}{section.105}

@@ -1,0 +1,239 @@
+\documentclass[
+11pt, 
+english, 
+singlespacing, % Single line spacing
+table, % To enable tabular operations.
+openany, % To enforce using next available page thus preventing creation of blank pages.
+%draft, 
+%liststotoc, % To add the list of figures/tables/etc to the table of contents
+%toctotoc, % To add the main table of contents to the table of contents
+%parskip, % To add space between paragraphs
+%nohyperref, % To not load the hyperref package
+headsepline, % To get a line under the header
+%chapterinoneline, % To place the chapter title next to the number on one line
+%consistentlayout, % To change the layout of the declaration, abstract and acknowledgements pages to match the default layout
+]{ProjectReport} % The class file specifying the document structure
+
+\usepackage[utf8]{inputenc} % Required for inputting international characters
+\usepackage[T1]{fontenc} % Output font encoding for international characters
+
+\usepackage{mathpazo} % Use the Palatino font by default
+
+\usepackage[backend = biber, style = ieee, natbib = true,]{biblatex} % Use the biber backend with the authoryear citation style (which resembles APA)
+
+\addbibresource{biblio.bib} % The filename of the bibliography
+
+\usepackage[autostyle=true]{csquotes} % Required to generate language-dependent quotes in the bibliography
+
+\usepackage{caption}
+
+\usepackage{subcaption} % To use subfigure marker.
+\usepackage{mathtools} % To write discontinuous functions and other mathematical formulations.
+
+%----------------------------------------------------------------------------------------
+%	MARGIN SETTINGS
+%----------------------------------------------------------------------------------------
+
+\geometry{
+	paper=a4paper, % Change to letterpaper for US letter
+	inner=2.5cm, % Inner margin
+	outer=3.8cm, % Outer margin
+	bindingoffset=.5cm, % Binding offset
+	top=1.5cm, % Top margin
+	bottom=1.5cm, % Bottom margin
+	%showframe, % Uncomment to show how the type block is set on the page
+}
+
+\graphicspath{ {./Figures/} }
+
+%----------------------------------------------------------------------------------------
+%	REPORT INFORMATION
+%----------------------------------------------------------------------------------------
+
+\thesistitle{\href{https://github.com/t6nand/source-separation}{Source Separation based on Deep Learning}} % Your Project Report title, this is used in the title and abstract, print it elsewhere with \ttitle
+\supervisor{Ms. Han Li} % Your supervisor's name, this is used in the title page, print it elsewhere with \supname
+\examiner{Prof. Dr.-Ing. Bernhard U. Seeber} % Your examiner's name, this is not currently used anywhere in the template, print it elsewhere with \examname
+\degree{MSCE} % Your degree name, this is used in the title page and abstract, print it elsewhere with \degreename
+\author{Tapan \textsc{Sharma}} % Your name, this is used in the title page and abstract, print it elsewhere with \authorname
+
+\subject{Project Lab course in Audio Information Processing} % Your subject area, this is not currently used anywhere in the template, print it elsewhere with \subjectname
+\university{\href{http://www.tum.de}{Technische Universität München}} % Your university's name and URL, this is used in the title page and abstract, print it elsewhere with \univname
+\department{\href{https://www.msce.ei.tum.de/index.php}{Master of Science in Communications Engineering}} % Your department's name and URL, this is used in the title page and abstract, print it elsewhere with \deptname
+\group{\href{https://www.ei.tum.de/aip/startseite/}{Chair of Audio Signal Processing}} % Your research group's name and URL, this is used in the title page, print it elsewhere with \groupname
+\faculty{\href{https://www.ei.tum.de/startseite/}{Faculty of Electrical Engineering and Information Technology}} % Your faculty's name and URL, this is used in the title page and abstract, print it elsewhere with \facname
+
+\AtBeginDocument{
+\hypersetup{pdftitle=\ttitle} % Set the PDF's title to your title
+\hypersetup{pdfauthor=\authorname} % Set the PDF's author to your name
+}
+
+\begin{document}
+
+\frontmatter % Use roman page numbering style (i, ii, iii, iv...) for the pre-content pages
+
+\pagestyle{plain} % Default to the plain heading style until the thesis style is called for the body content
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\begin{titlepage}
+ \includegraphics[width=5em]{Logo_TUM} % University logo
+\begin{center}
+
+\vspace*{.05\textheight}
+{\scshape\LARGE \univname\par}\vspace{1.2cm} % University name
+\textsc{\Large Project Report}\\[0.5cm] % Thesis type
+
+\HRule \\[0.4cm] % Horizontal line
+{\huge \bfseries \ttitle\par}\vspace{0.4cm} % Thesis title
+\HRule \\[1.5cm] % Horizontal line
+ 
+\begin{minipage}[t]{0.4\textwidth}
+\begin{flushleft} \large
+\emph{Author:}\\
+{\authorname} % Author name
+\end{flushleft}
+\end{minipage}
+\begin{minipage}[t]{0.4\textwidth}
+\begin{flushright} \large
+\emph{Supervisor:} \\
+{\supname} % Supervisor name  
+\end{flushright}
+\end{minipage}\\[3cm]
+
+\begin{minipage}[t]{0.4\textwidth}
+\begin{center}
+\emph{Examiner:} \\
+{\examname} % Examiner's name  
+\end{center}
+\end{minipage}\\[3cm]
+ 
+\vfill
+
+\groupname\\\facname\\[3cm] % Research group name and department name
+ 
+\vfill
+
+{\large \today}\\[4cm] % Date
+ 
+\vfill
+\end{center}
+\end{titlepage}
+
+%----------------------------------------------------------------------------------------
+%	Declaration of Originality
+%----------------------------------------------------------------------------------------
+\begin{originality}
+\addchaptertocentry{\originalityname}
+This is to certify that the project titled \textbf{“Source Separation based on Deep Learning”} is my original work and is being submitted to the chair of the \enquote{\textbf{Audio Information Processing}} of the \enquote{\textbf{Faculty of Electrical and Information Technology}} in the \enquote{\textbf{Technische Universität München}}. This report has not been submitted earlier either to this University or to any other University/Institution for the fulfillment of the requirement of a course of study.\\
+\\
+\textit{Name}: \textbf{Tapan Sharma}\\
+\textit{Place}: \textbf{Munich}\\
+\textit{Date}: \textbf{12th July, 2019}\\
+\end{originality} 
+
+%----------------------------------------------------------------------------------------
+%	ACKNOWLEDGEMENT PAGE
+%----------------------------------------------------------------------------------------
+
+\begin{acknowledgements}
+\addchaptertocentry{\acknowledgementname} % Add the abstract to the table of contents
+I would first of all like to thank the \enquote{Chair of Audio Information Processing} under the leadership of Prof. Dr.-Ing. Bernhard U. Seeber for making this project lab course available to the masters students as a module particularly in the curriculum program of MSCE (Master of Science in Communication Engineering).\par
+I would also like to thank our project supervisor Ms. Han Li who structured and organised the problem statement for the project very clearly and also motivated us to take on the project work with well defined goals to achieve. Her guidance has been in particular of great help to me in improving my work. She pointed us to the right direction in terms of articles, websites and toolboxes which turned out to be of great help to us.\par
+In the end, this project would not have seen timely completion without the help of my project mate Mr. Md. Toaha Umar. His insights in our discussions were very fruitful and helped me deepen my understanding and get a new perspective to approach solving some problems. In all, working with him has helped me a lot in my peer learning. 
+\end{acknowledgements}
+
+%----------------------------------------------------------------------------------------
+%	ABSTRACT PAGE
+%----------------------------------------------------------------------------------------
+
+\begin{abstract}
+\addchaptertocentry{\abstractname} % Add the abstract to the table of contents
+This report presents an implementation and evaluation of an end-to-end system for speech enhancement based source separation, in the monaural voice recordings. Speech Enhancement is achieved by applying a ratio mask to a time-frequency representation of the input signal and through a subsequent reconstruction for the estimated clean speech signal. The mask is estimated from the noisy mixture input data using deep learning machines which are trained on a dataset obtained by additive mixing of recordings of the clean speech and the different sources of noise at a particular signal-to-noise ratio. The expected intelligibility of the reconstructed audio is compared using the intelligibility metric STOI (Short-Time Objective Intelligebility). The quality of estimated clean speech post processing, is compared using the quality metric PESQ (Perceptual Evaluation of Speech Quality), as recommended by the ITU (International Telecommunication Union). We discover that a deep convolutional neural network based learning machines, achieve a superior performance at speech enhancement using the cochleagram as the training data along with the time-frequency masks based on cochleagrams when compared to other deep learning models working on acoustic features and time-frequency masks as their training data.
+\end{abstract}
+
+
+%----------------------------------------------------------------------------------------
+%	LIST OF CONTENTS/FIGURES/TABLES PAGES
+%----------------------------------------------------------------------------------------
+\tableofcontents % Prints the main table of contents
+\listoffigures
+\listoftables
+
+
+%----------------------------------------------------------------------------------------
+%	ABBREVIATIONS
+%----------------------------------------------------------------------------------------
+
+\begin{abbreviations}{ll} % Include a list of abbreviations (a table of two columns)
+
+\textbf{STFT} & \textbf{S}hort-\textbf{T}ime \textbf{F}ourier \textbf{T}ransform\\
+\textbf{ERB} & \textbf{E}quivalent \textbf{R}ectangular \textbf{B}andwidth\\
+\textbf{STOI} & \textbf{S}hort-\textbf{T}ime \textbf{O}bjective \textbf{I}ntelligibility\\
+\textbf{PESQ} & \textbf{P}erceptual \textbf{E}valuation of \textbf{S}peech \textbf{Q}uality\\
+\textbf{MOS} & \textbf{M}ean \textbf{O}pinion \textbf{S}core\\
+\textbf{LQO} & \textbf{L}istening \textbf{Q}uality \textbf{O}bjective\\
+\textbf{PESQMOS} & \textbf{P}erceptual \textbf{E}valuation of \textbf{S}peech \textbf{Q}uality \textbf{M}ean \textbf{O}pinion \textbf{S}core\\
+\textbf{MOSLQO} & \textbf{M}ean \textbf{O}pinion \textbf{S}core \textbf{L}istening \textbf{Q}uality \textbf{O}bjective\\
+\textbf{DNN} & \textbf{D}eep \textbf{N}eural \textbf{N}etwork\\
+\textbf{CNN} & \textbf{C}onvolutional \textbf{N}eural \textbf{N}etwork\\
+\textbf{LSTM} & \textbf{L}ong \textbf{S}hort-\textbf{T}erm \textbf{M}emory\\
+\textbf{IRM} & \textbf{I}deal \textbf{R}atio \textbf{M}ask\\
+\textbf{GFCC} & \textbf{G}ammatone \textbf{F}requency \textbf{C}epstral \textbf{C}oefficients\\
+\textbf{MFCC} & \textbf{M}el-\textbf{F}requency \textbf{C}epstral \textbf{C}oefficients\\
+\textbf{t-f} & \textbf{t}ime-\textbf{f}requency\\
+\textbf{RMSE} & \textbf{R}oot \textbf{M}ean \textbf{S}quare \textbf{E}rror\\
+\textbf{reLU} & \textbf{re}ctified \textbf{L}inear \textbf{U}nit\\
+
+\end{abbreviations}
+
+
+%----------------------------------------------------------------------------------------
+%	SYMBOLS
+%----------------------------------------------------------------------------------------
+
+\begin{symbols}{lll} % Include a list of Symbols (a three column table)
+
+$t$ & time & \si{\second} \\
+$f$ & frequency & \si{\hertz} \\
+$S(t,f)$ & log spectral energy of clean speech signal &  dB per t-f frame \\
+$N(t,f)$ & log spectral energy of noise signal &  dB per t-f frame \\
+
+\end{symbols}
+
+
+%----------------------------------------------------------------------------------------
+%	REPORT CONTENT - CHAPTERS
+%----------------------------------------------------------------------------------------
+
+\mainmatter % Begin numeric (1,2,3...) page numbering
+
+\pagestyle{thesis} % Return the page headers back to the "thesis" style
+
+% Include the chapters of the thesis as separate files from the Chapters folder
+
+\include{Chapters/Chapter1}
+\include{Chapters/Chapter2} 
+\include{Chapters/Chapter3}
+\include{Chapters/Chapter4} 
+
+%----------------------------------------------------------------------------------------
+%	REPORT CONTENT - APPENDICES
+%----------------------------------------------------------------------------------------
+
+\appendix % Cue to tell LaTeX that the following "chapters" are Appendices
+
+% Include the appendices of the thesis as separate files from the Appendices folder
+
+\include{Appendices/AppendixA}
+
+%----------------------------------------------------------------------------------------
+%	BIBLIOGRAPHY
+%----------------------------------------------------------------------------------------
+
+\printbibliography[title = Bibliography]
+
+%----------------------------------------------------------------------------------------
+
+\end{document}  
